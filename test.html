@@ -1,0 +1,102 @@
+
+
+<html>
+<head>
+  <style>
+    #display {
+      border: 1px solid gray;
+      width: 640px;
+      height: 480px;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="display" width="640" height="480"/>
+
+
+</body>
+
+</html>
+
+<script>
+
+let scene = [];
+let c = document.getElementById("display");
+let ctx = c.getContext('2d');
+
+let obj = gen_square(100, 100, 100);
+
+let start = [10, 10];
+let end = [200, 200];
+
+scene.push(start);
+scene.push(end);
+scene.push(obj);
+
+draw_scene(scene);
+
+function draw_scene(scene)
+{
+  let drawnstart = false;
+
+  for (let o of scene)
+  {
+    // array of arrays (obstacle object)
+    if (Array.isArray(o[0]))
+    {
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'black';
+
+      for (let e=0; e<o.length-1; e++)
+      {
+        let a = o[e], b = o[e+1];
+
+        ctx.beginPath();
+        ctx.moveTo(a[0],a[1]);
+        ctx.lineTo(b[0],b[1]);
+        ctx.stroke();
+
+      }
+
+
+    } else {
+
+      ctx.beginPath();
+      ctx.arc(o[0], o[1], 5, 0, 2 * Math.PI, false);
+      ctx.fillStyle = drawnstart ? 'red' : 'green';
+      ctx.fill();
+      // context.lineWidth = 5;
+      // context.strokeStyle = '#003300';
+      // context.stroke();
+      drawnstart = true;
+    }
+  }
+
+}
+
+
+function gen_square(x, y, size)
+{
+  let hsize = size>>1;
+  let sq = [];
+
+  // or just make a unit square and scale it up duh :|
+
+  // top left
+  sq.push( [x - hsize, y - hsize] );
+  // top right
+  sq.push( [x + hsize, y - hsize] );
+  // bottom right
+  sq.push( [x + hsize, y + hsize] );
+  // bottom left
+  sq.push( [x - hsize, y + hsize] );
+  // top left again
+  sq.push( [x - hsize, y - hsize] );
+
+  return sq;
+}
+
+
+</script>
