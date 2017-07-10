@@ -26,17 +26,59 @@ let c = document.getElementById("display");
 let ctx = c.getContext('2d');
 
 let obj = gen_square(100, 100, 100);
+let obj2 = gen_square(200, 200, 50);
 
 let start = [10, 10];
-let end = [200, 200];
+let end = [250, 250];
 
-scene.push(start);
-scene.push(end);
 scene.push(obj);
+// scene.push(obj2);
 
-draw_scene(scene);
+draw_scene(scene, start, end);
 
-function draw_scene(scene)
+calc_scene_graph(scene, start, end);
+
+function calc_scene_graph(obstacles, start, end)
+{
+  // 1. keep a list of geometry (obstacles)
+  // 2. extract nodes
+
+  // a list of unique points/vertices in the scene
+  let nodes = [];
+  
+  // an edge is a a line joined by two vertices. the vertex of each edge
+  // can be duplicated, e.g. might share a vertex with the next edge
+  let edges = [];
+
+  // add our start and endpoints to the graph
+  nodes.push(start);
+  nodes.push(end);
+
+  //now every vertex in all obstacle geometry
+
+  for (let o of obstacles)
+  {
+    // extract each obstacle's edges and nodes
+    let e;
+    for (e=0; e<o.length-1; e++)
+    {
+      edges.push([o[e], o[e+1]]);
+      nodes.push(o[e]);
+    }
+
+    // this isn't a closed ring (matching start and endp)
+    if (!equals(o[0], o[e]))
+      nodes.push(o[e])
+  }
+
+}
+
+function equals(a, b)
+{
+  return (a[0] == b[0] && a[1] == b[1]);
+}
+
+function draw_scene(scene, startp, endp)
 {
   let drawnstart = false;
 
@@ -45,33 +87,32 @@ function draw_scene(scene)
     // array of arrays (obstacle object)
     if (Array.isArray(o[0]))
     {
-
       ctx.lineWidth = 2;
       ctx.strokeStyle = 'black';
 
       for (let e=0; e<o.length-1; e++)
       {
         let a = o[e], b = o[e+1];
-
         ctx.beginPath();
         ctx.moveTo(a[0],a[1]);
         ctx.lineTo(b[0],b[1]);
         ctx.stroke();
 
       }
-
-
-    } else {
-
-      ctx.beginPath();
-      ctx.arc(o[0], o[1], 5, 0, 2 * Math.PI, false);
-      ctx.fillStyle = drawnstart ? 'red' : 'green';
-      ctx.fill();
-      // context.lineWidth = 5;
-      // context.strokeStyle = '#003300';
-      // context.stroke();
-      drawnstart = true;
     }
+  }
+
+  if (startp && endp)
+  {
+    ctx.beginPath();
+    ctx.arc(startp[0], startp[1], 5, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'green';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(endp[0], endp[1], 5, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
   }
 
 }
