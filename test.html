@@ -45,7 +45,7 @@ function calc_scene_graph(obstacles, start, end)
 
   // a list of unique points/vertices in the scene
   let nodes = [];
-  
+
   // an edge is a a line joined by two vertices. the vertex of each edge
   // can be duplicated, e.g. might share a vertex with the next edge
   let edges = [];
@@ -70,6 +70,11 @@ function calc_scene_graph(obstacles, start, end)
     if (!equals(o[0], o[e]))
       nodes.push(o[e])
   }
+
+  // now, test each node against all other nodes
+  // if a direct line-of-sight, create a 'GraphEdge'
+
+
 
 }
 
