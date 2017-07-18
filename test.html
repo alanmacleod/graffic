@@ -74,6 +74,28 @@ function calc_scene_graph(obstacles, start, end)
   // now, test each node against all other nodes
   // if a direct line-of-sight, create a 'GraphEdge'
 
+  let ge = [];
+
+  for (let i=0; i<nodes.length;i++)
+  {
+    ge[i] = [];
+    for (let j=0; j<nodes.length;j++)
+    {
+      let maj = Math.min(i, j);
+      let min = Math.max(i, j);
+
+      // already tested
+      if (ge[maj][min]) continue;
+
+      // test from i -> j
+
+      // if clear, add to ge[]
+
+      ge[maj][min] = true;
+
+    }
+  }
+
 
 
 }
