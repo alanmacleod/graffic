@@ -74,30 +74,23 @@ function calc_scene_graph(obstacles, start, end)
   // now, test each node against all other nodes
   // if a direct line-of-sight, create a 'GraphEdge'
 
-  let ge = [];
+  // This nested iteration allows us to test each line only
+  // once. i.e. testing A -> B and not B -> A, which would be redundant
+  // To help visualise this, draw out the 2d table on paper
+  // you'll see the diagonal (X==Y) is obv skipped. Everything above the
+  // diagonal is tested, everything below is, ofc, a mirror of above.
 
-  for (let i=0; i<nodes.length;i++)
-  {
-    ge[i] = [];
-    for (let j=0; j<nodes.length;j++)
+  for (let x=0; x<nodes.length-1; x++)
+    for (let y=x+1; y<nodes.length; y++)
     {
-      let maj = Math.min(i, j);
-      let min = Math.max(i, j);
-
-      // already tested
-      if (ge[maj][min]) continue;
-
-      // test from i -> j
-
-      // if clear, add to ge[]
-
-      ge[maj][min] = true;
-
+        //console.log(nodes[x], nodes[y]);
     }
+
+  for (let e=0; e<edges.length; e++)
+  {
+    console.log(edges[e]);
+
   }
-
-
-
 }
 
 function equals(a, b)
@@ -118,17 +111,12 @@ function draw_scene(scene, startp, endp)
       ctx.strokeStyle = 'black';
 
       for (let e=0; e<o.length-1; e++)
-      {
-        let a = o[e], b = o[e+1];
-        ctx.beginPath();
-        ctx.moveTo(a[0],a[1]);
-        ctx.lineTo(b[0],b[1]);
-        ctx.stroke();
+        draw_line(o[e], o[e+1]);
 
-      }
     }
   }
 
+  // Draw circles for start + end
   if (startp && endp)
   {
     ctx.beginPath();
@@ -142,6 +130,15 @@ function draw_scene(scene, startp, endp)
     ctx.fill();
   }
 
+}
+
+function draw_line(a, b, c)
+{
+  ctx.strokeStyle = 'black' | c;
+  ctx.beginPath();
+  ctx.moveTo(a[0],a[1]);
+  ctx.lineTo(b[0],b[1]);
+  ctx.stroke();
 }
 
 
