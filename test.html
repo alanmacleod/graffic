@@ -83,14 +83,41 @@ function calc_scene_graph(obstacles, start, end)
   for (let x=0; x<nodes.length-1; x++)
     for (let y=x+1; y<nodes.length; y++)
     {
-        //console.log(nodes[x], nodes[y]);
+        let testedge = [nodes[x], nodes[y]];
+
+        // yes, this is a clear path, draw it now
+        if (edgevisibilty(testedge, edges))
+        {
+          //console.log("ok!")
+          draw_line(testedge[0], testedge[1], 'magenta');
+        }
+
     }
 
   for (let e=0; e<edges.length; e++)
   {
-    console.log(edges[e]);
+    //console.log(edges[e]);
+    // draw_line(edges[e][0], edges[e][1], 'magenta');
 
   }
+}
+
+function edgevisibilty(testedge, edges)
+{
+  for (let t=0; t<edges.length; t++)
+  {
+    let e = edges[t];
+
+    if (intersects(
+      testedge[0][0], testedge[0][1],
+      testedge[1][0], testedge[1][1],
+      e[0][0], e[0][1],
+      e[1][0], e[1][1],
+    ))
+      return false;
+  }
+
+  return true;
 }
 
 function equals(a, b)
@@ -102,17 +129,13 @@ function draw_scene(scene, startp, endp)
 {
   let drawnstart = false;
 
+  // Draw all obstacles
   for (let o of scene)
   {
-    // array of arrays (obstacle object)
     if (Array.isArray(o[0]))
     {
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = 'black';
-
       for (let e=0; e<o.length-1; e++)
-        draw_line(o[e], o[e+1]);
-
+        draw_line(o[e], o[e+1], 'black');
     }
   }
 
@@ -134,11 +157,26 @@ function draw_scene(scene, startp, endp)
 
 function draw_line(a, b, c)
 {
-  ctx.strokeStyle = 'black' | c;
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = c || 'black';
   ctx.beginPath();
   ctx.moveTo(a[0],a[1]);
   ctx.lineTo(b[0],b[1]);
   ctx.stroke();
+}
+
+function intersects(a,b,c,d,  p,q,r,s)
+{
+  var det, gamma, lambda;
+  det = (c - a) * (s - q) - (r - p) * (d - b);
+  if (det === 0) {
+    return false;
+  } else {
+
+    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+  }
 }
 
 
