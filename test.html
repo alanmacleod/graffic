@@ -86,7 +86,9 @@ function calc_scene_graph(obstacles, start, end)
         let testedge = [nodes[x], nodes[y]];
 
         // yes, this is a clear path, draw it now
-        if (edgevisibilty(testedge, edges))
+        // Need to test for incursion into null space
+        // if (edgevisibilty(testedge, edges))
+        
         {
           //console.log("ok!")
           draw_line(testedge[0], testedge[1], 'magenta');
