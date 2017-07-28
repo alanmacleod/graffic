@@ -21,10 +21,39 @@
 
 <script>
 
+const Vector2 = {
+  add: function(a, b)
+  {
+    return [
+      a[0] + b[0],
+      a[1] + b[1]
+    ]
+  },
+  sub: function(a, b)
+  {
+    return [
+      a[0] - b[0],
+      a[1] - b[1]
+    ];
+  },
+  norm: function(v)
+  {
+    let m = this.mag( v );
+    return m===0 ? [0,0] : [v[0]/m, v[1]/m];
+  },
+  mag: function(v)
+  {
+    return Math.sqrt(v[0] * v[0] + v[1]*v[1]);
+  }
+}
+
 let scene = [];
 let c = document.getElementById("display");
 let ctx = c.getContext('2d');
 
+console.log(
+  Vector2.sub([100, 100], [10, 10])
+);
 
 let obj = gen_square(100, 100, 100);
 let obj2 = gen_square(195, 199, 50);
@@ -247,6 +276,106 @@ function gen_square(x, y, size)
 
   return sq;
 }
+
+
+
+
+//
+//
+// function Vector2(x, y)
+// {
+//   this.x = x || 0;
+//   this.y = y || 0;
+//
+//   this.set = function(x, y)
+//   {
+//     [this.x, this.y] = [x, y];
+//     return this;
+//   }
+//
+//   // Create new vectors
+//
+//   this.sub = function(b)
+//   {
+//     return new Vector2(this.x - b.x, this.y - b.y);
+//   }
+//
+//   this.add = function(b)
+//   {
+//     return new Vector2(b.x + this.x, b.y + this.y);
+//   }
+//
+//   this.mul = function(s)
+//   {
+//     return new Vector2(this.x * s, this.y * s);
+//   }
+//
+//
+//   this.div = function(s)
+//   {
+//     return new Vector2(this.x / s, this.y / s);
+//   }
+//
+//   // Arithmetic in-place
+//
+//   this.tsub = function(b)
+//   {
+//     this.x -= b.x;
+//     this.y -= b.y;
+//     return this;
+//   }
+//
+//   this.tadd = function(b)
+//   {
+//     this.x += b.x;
+//     this.y += b.y;
+//     return this;
+//   }
+//
+//   this.tmul = function(s)
+//   {
+//     this.x *= s;
+//     this.y *= s;
+//     return this;
+//   }
+//
+//   this.tdiv = function(s)
+//   {
+//     this.x /= s;
+//     this.y /= s;
+//     return this;
+//   }
+//
+//   this.tnorm = function()
+//   {
+//     let m = this.mag();
+//     return m ? this.tdiv(m) : this;
+//   }
+//
+//   this.norm = function()
+//   {
+//     let m = this.mag();
+//     return m ? this.div(m) : new Vector2(this.x, this.y);
+//   }
+//
+//   this.mag = function()
+//   {
+//     return Math.sqrt(this.x * this.x + this.y * this.y);
+//   }
+//
+//   this.dist = function(b)
+//   {
+//     let [xd, yd] = [ b.x - this.x, b.y - this.y];
+//     return Math.sqrt(xd*xd + yd*yd);
+//   }
+//
+//   this.distsq = function(b)
+//   {
+//     let [xd, yd] = [ b.x - this.x, b.y - this.y];
+//     return (xd*xd + yd*yd);
+//   }
+//
+// }
 
 
 </script>
