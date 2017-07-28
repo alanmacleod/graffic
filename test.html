@@ -34,15 +34,25 @@ let end = [250, 250];
 
 let line =[[100,150], [300,200]];
 let normal = get_unit_normal(line);
+let perp = get_perpendicular(line, normal, 10);
 
 draw_line(line[0], line[1], 'red');
-draw_line(normal[0], normal[1], 'blue');
-console.log(normal);
+draw_line(perp[0], perp[1], 'blue');
 
 scene.push(obj);
 
 // draw_scene(scene, start, end);
 // calc_scene_graph(scene, start, end);
+
+function get_perpendicular(line, normal, size)
+{
+  let mx = (line[0][0] + line[1][0]) / 2;
+  let my = (line[0][1] + line[1][1]) / 2;
+  return [
+    [mx, my],
+    [mx + (normal[0] * size), my + (normal[1] * size)]
+  ];
+}
 
 function get_unit_normal(l)
 {
