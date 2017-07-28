@@ -25,18 +25,47 @@ let scene = [];
 let c = document.getElementById("display");
 let ctx = c.getContext('2d');
 
+
 let obj = gen_square(100, 100, 100);
-let obj2 = gen_square(200, 200, 50);
+let obj2 = gen_square(195, 199, 50);
 
 let start = [10, 10];
 let end = [250, 250];
 
+let line =[[100,150], [300,200]];
+let normal = get_unit_normal(line);
+
+draw_line(line[0], line[1], 'red');
+draw_line(normal[0], normal[1], 'blue');
+console.log(normal);
+
 scene.push(obj);
-// scene.push(obj2);
 
-draw_scene(scene, start, end);
+// draw_scene(scene, start, end);
+// calc_scene_graph(scene, start, end);
 
-calc_scene_graph(scene, start, end);
+function get_unit_normal(l)
+{
+  const X=0, Y=1;
+  let dx = l[1][X] - l[0][X];
+  let dy = l[1][Y] - l[0][Y];
+
+  let n = translate_to([[-dy, dx], [dy, -dx]], [0,0]);
+  let m = len([0,0], n[1]);
+
+  return m !==0 ? [n[1][0] / m, n[1][1] / m] : undefined;
+}
+
+function translate_to(l, o)
+{
+  let xd = o[0] - l[0][0];
+  let yd = o[1] - l[0][1];
+  return [
+    [l[0][0] + xd, l[0][1] + yd],
+    [l[1][0] + xd, l[1][1] + yd]
+  ];
+}
+
 
 function calc_scene_graph(obstacles, start, end)
 {
@@ -88,7 +117,7 @@ function calc_scene_graph(obstacles, start, end)
         // yes, this is a clear path, draw it now
         // Need to test for incursion into null space
         // if (edgevisibilty(testedge, edges))
-        
+
         {
           //console.log("ok!")
           draw_line(testedge[0], testedge[1], 'magenta');
@@ -102,6 +131,14 @@ function calc_scene_graph(obstacles, start, end)
     // draw_line(edges[e][0], edges[e][1], 'magenta');
 
   }
+}
+
+function len(a, b)
+{
+  let dx = b[0] - a[0] // x2 - x1
+  let dy = b[1] - a[1];
+  return Math.sqrt( dx*dx + dy*dy );
+
 }
 
 function edgevisibilty(testedge, edges)
@@ -186,9 +223,7 @@ function gen_square(x, y, size)
 {
   let hsize = size>>1;
   let sq = [];
-
   // or just make a unit square and scale it up duh :|
-
   // top left
   sq.push( [x - hsize, y - hsize] );
   // top right
