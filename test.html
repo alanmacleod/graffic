@@ -68,6 +68,7 @@ let perp = get_perpendicular(line, normal, 10);
 draw_line(line[0], line[1], 'red');
 draw_line(perp[0], perp[1], 'blue');
 
+
 scene.push(obj);
 
 // draw_scene(scene, start, end);
@@ -82,6 +83,7 @@ function get_perpendicular(line, normal, size)
     [mx + (normal[0] * size), my + (normal[1] * size)]
   ];
 }
+
 
 function get_unit_normal(l)
 {
