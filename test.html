@@ -51,9 +51,9 @@ let scene = [];
 let c = document.getElementById("display");
 let ctx = c.getContext('2d');
 
-console.log(
-  Vector2.sub([100, 100], [10, 10])
-);
+// console.log(
+//   Vector2.sub([100, 100], [10, 10])
+// );
 
 let obj = gen_square(100, 100, 100);
 let obj2 = gen_square(195, 199, 50);
@@ -62,12 +62,28 @@ let start = [10, 10];
 let end = [250, 250];
 
 let line =[[100,150], [300,200]];
-let normal = get_unit_normal(line);
-let perp = get_perpendicular(line, normal, 10);
+let pt = [200, 400];
+// let normal = get_unit_normal(line);
+// let perp = get_perpendicular(line, normal, 10);
 
+// 2d plane
 draw_line(line[0], line[1], 'red');
-draw_line(perp[0], perp[1], 'blue');
 
+// 2d point
+ctx.beginPath();
+ctx.arc(pt[0], pt[1], 5, 0, 2 * Math.PI, false);
+ctx.fillStyle = 'blue';
+ctx.fill();
+
+let d = (
+          (pt[0] - line[0][0]) * (line[1][1] - line[0][1])
+        ) - (
+          (pt[1] - line[0][1]) * (line[1][0] - line[0][0])
+        );
+
+console.log("d = " + d);
+
+// draw_line(perp[0], perp[1], 'blue');
 
 scene.push(obj);
 
