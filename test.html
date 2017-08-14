@@ -75,11 +75,7 @@ ctx.arc(pt[0], pt[1], 5, 0, 2 * Math.PI, false);
 ctx.fillStyle = 'blue';
 ctx.fill();
 
-let d = (
-          (pt[0] - line[0][0]) * (line[1][1] - line[0][1])
-        ) - (
-          (pt[1] - line[0][1]) * (line[1][0] - line[0][0])
-        );
+let d = ((pt[0] - line[0][0]) * (line[1][1] - line[0][1])) - ((pt[1] - line[0][1]) * (line[1][0] - line[0][0]));
 
 console.log("d = " + d);
 
