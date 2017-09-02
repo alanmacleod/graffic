@@ -10,10 +10,11 @@
     }
   </style>
 </head>
+<script src='./line-segments-intersect.js'></script>
+
 <body>
 
 <canvas id="display" width="640" height="480"/>
-
 
 </body>
 
@@ -21,31 +22,40 @@
 
 <script>
 
-const Vector2 = {
-  add: function(a, b)
-  {
-    return [
-      a[0] + b[0],
-      a[1] + b[1]
-    ]
-  },
-  sub: function(a, b)
-  {
-    return [
-      a[0] - b[0],
-      a[1] - b[1]
-    ];
-  },
-  norm: function(v)
-  {
-    let m = this.mag( v );
-    return m===0 ? [0,0] : [v[0]/m, v[1]/m];
-  },
-  mag: function(v)
-  {
-    return Math.sqrt(v[0] * v[0] + v[1]*v[1]);
-  }
-}
+let linea = [[10,10], [300, 300]];
+let lineb = [[150, 10], [50, 150]];
+
+let res = doLineSegmentsIntersect(linea[0], linea[1], lineb[0], lineb[1]);
+
+console.log(`Intersection test says: ${res}`);
+
+
+//
+// const Vector2 = {
+//   add: function(a, b)
+//   {
+//     return [
+//       a[0] + b[0],
+//       a[1] + b[1]
+//     ]
+//   },
+//   sub: function(a, b)
+//   {
+//     return [
+//       a[0] - b[0],
+//       a[1] - b[1]
+//     ];
+//   },
+//   norm: function(v)
+//   {
+//     let m = this.mag( v );
+//     return m===0 ? [0,0] : [v[0]/m, v[1]/m];
+//   },
+//   mag: function(v)
+//   {
+//     return Math.sqrt(v[0] * v[0] + v[1]*v[1]);
+//   }
+// }
 
 let scene = [];
 let c = document.getElementById("display");
@@ -57,11 +67,20 @@ let ctx = c.getContext('2d');
 
 //
 
+
+
+
+
 let obj = gen_square(100, 100, 100);
-// let obj2 = gen_square(195, 199, 50);
+
+// let obj = [[10, 300], [300, 10]];
 
 let start = [10, 10];
-let end = [300, 250];
+let end = [300, 300];
+
+// let res = edgevisibilty([start, end], [obj]);
+//
+// console.log(res);
 
 for (var t=0; t<obj.length; t++)
 {
@@ -70,11 +89,13 @@ for (var t=0; t<obj.length; t++)
 
   var tline = [obj[a], obj[b]];
 
-  let r = edgevisibilty([start, end], tline);
+  let r = edgevisibilty([start, end], [tline]);
 
   console.log(r);
 
 }
+
+
 
 // let start = [10, 100];
 // let end = [250, 100];
@@ -106,9 +127,12 @@ for (var t=0; t<obj.length; t++)
 
 // draw_line(perp[0], perp[1], 'blue');
 
-scene.push(obj);
 
-draw_scene(scene, start, end);
+
+// scene.push(obj);
+// draw_scene(scene, start, end);
+
+
 // calc_scene_graph(scene, start, end);
 
 function get_perpendicular(line, normal, size)
@@ -224,12 +248,20 @@ function edgevisibilty(testedge, edges)
   {
     let e = edges[t];
 
-    if (intersects(
-      testedge[0][0], testedge[0][1],
-      testedge[1][0], testedge[1][1],
-      e[0][0], e[0][1],
-      e[1][0], e[1][1],
-    ))
+    // if (intersects(
+    //   testedge[0][0], testedge[0][1],
+    //   testedge[1][0], testedge[1][1],
+    //   e[0][0], e[0][1],
+    //   e[1][0], e[1][1],
+    // ))
+    //   return false;
+
+
+    let res = doLineSegmentsIntersect(testedge[0], testedge[1], e[0], e[1]);
+
+    // console.log(`Intersecting: (${testedge[0]}, ${testedge[1]}) -> (${e[0]}, ${e[1]}) == ${res}`);
+
+    if (res)
       return false;
   }
 
@@ -285,12 +317,16 @@ function intersects(a,b,c,d,  p,q,r,s)
 {
   var det, gamma, lambda;
   det = (c - a) * (s - q) - (r - p) * (d - b);
+
+  // console.log(`intesects.det = ${det}`);
   if (det === 0) {
     return false;
   } else {
 
     lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
     gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+
+    // console.log(`intesects.lambda/gamma = ${lambda},${gamma}`);
     return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
   }
 }
