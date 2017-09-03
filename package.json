@@ -1,0 +1,28 @@
+{
+  "name": "graffic",
+  "version": "0.0.1",
+  "description": "Shortest pathfinding across an arbitrary continuous geometry scene graph",
+  "main": "main.js",
+  "scripts": {
+    "test": "ava",
+    "build": "webpack",
+    "watch": "webpack -w"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alanmacleod/graffic.git"
+  },
+  "author": "Alan MacLeod",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alanmacleod/graffic/issues"
+  },
+  "homepage": "https://github.com/alanmacleod/graffic#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "webpack": "^3.5.5"
+  }
+}
