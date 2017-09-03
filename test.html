@@ -128,29 +128,46 @@ function calc_scene_graph(obstacles, start, end)
   // a list of unique points/vertices in the scene
   let nodes = [];
 
-  // an edge is a a line joined by two vertices. the vertex of each edge
+  // an edge is a line joined by two vertices. the vertex of each edge
   // can be duplicated, e.g. might share a vertex with the next edge
+
+  // Edges are solid and are iterated to test the visibility of one point (node)
+  // to another
+
   let edges = [];
 
+  let shape_id = 1;
+
   // add our start and endpoints to the graph
-  nodes.push(start);
-  nodes.push(end);
+  nodes.push( {vertex: start,  shape: shape_id++} );
+  nodes.push( {vertex: end,    shape: shape_id++} );
 
   //now every vertex in all obstacle geometry
 
   for (let o of obstacles)
   {
     // extract each obstacle's edges and nodes
+
+    shape_id++;
+
     let e;
     for (e=0; e<o.length-1; e++)
     {
       edges.push([o[e], o[e+1]]);
-      nodes.push(o[e]);
+      //console.log("node: ", o[e])
+      nodes.push({
+        vertex: o[e],
+        shape: shape_id
+      });
+      //nodes.push({o[e]);
     }
 
     // this isn't a closed ring (matching start and endp)
     if (!equals(o[0], o[e]))
-      nodes.push(o[e])
+      nodes.push({
+        vertex: o[e],
+        shape: shape_id
+      });
   }
 
   // now, test each node against all other nodes
@@ -165,7 +182,16 @@ function calc_scene_graph(obstacles, start, end)
   for (let x=0; x<nodes.length-1; x++)
     for (let y=x+1; y<nodes.length; y++)
     {
-        let testedge = [nodes[x], nodes[y]];
+        let A = nodes[x];
+        let B = nodes[y];
+
+        // We're testing the shape's vertices against itself
+        // which leads to internal paths inside the shape (invalid!)
+        if (A.shape == B.shape) continue;
+
+        let testedge = [A.vertex, B.vertex];
+
+        console.log(A, B);
 
         // yes, this is a clear path, draw it now
         // Need to test for incursion into null space
@@ -210,7 +236,7 @@ function edgevisibilty(testedge, edges)
 
     if (res.intersect && !res.kiss)
       return false;
-      
+
   }
 
   return true;
