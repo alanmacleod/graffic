@@ -22,40 +22,31 @@
 
 <script>
 
-let linea = [[10,10], [300, 300]];
-let lineb = [[150, 10], [50, 150]];
-
-let res = doLineSegmentsIntersect(linea[0], linea[1], lineb[0], lineb[1]);
-
-console.log(`Intersection test says: ${res}`);
-
-
+// let linea = [[10,10], [300, 300]];
+// let lineb = [[150, 10], [50, 150]];
 //
-// const Vector2 = {
-//   add: function(a, b)
-//   {
-//     return [
-//       a[0] + b[0],
-//       a[1] + b[1]
-//     ]
-//   },
-//   sub: function(a, b)
-//   {
-//     return [
-//       a[0] - b[0],
-//       a[1] - b[1]
-//     ];
-//   },
-//   norm: function(v)
-//   {
-//     let m = this.mag( v );
-//     return m===0 ? [0,0] : [v[0]/m, v[1]/m];
-//   },
-//   mag: function(v)
-//   {
-//     return Math.sqrt(v[0] * v[0] + v[1]*v[1]);
-//   }
-// }
+// let res = doLineSegmentsIntersect(linea[0], linea[1], lineb[0], lineb[1]);
+//
+// console.log(`Intersection test says: ${res}`);
+
+
+console.log("****");
+
+let endpoint_kiss = [[10, 10], [100,100], [100, 100], [100, 200]];
+let coplanar_endpoint_join_overlap = [[10, 10], [10, 200], [10, 10], [10, 100]];
+let coplanar_endpoint_kiss = [[10, 10], [10, 100], [10, 100], [10, 200]];
+
+// passthrough rect's corner test
+let midpoint_touch = [[10, 10], [200,200], [100, 100], [100, 200]];
+
+let cs = endpoint_kiss;
+
+let res = intersects(cs[0], cs[1], cs[2], cs[3]);
+
+console.log("Intersect2 = ", res);
+
+console.log("****");
+
 
 let scene = [];
 let c = document.getElementById("display");
@@ -68,9 +59,6 @@ let ctx = c.getContext('2d');
 //
 
 
-
-
-
 let obj = gen_square(100, 100, 100);
 
 // let obj = [[10, 300], [300, 10]];
@@ -81,19 +69,18 @@ let end = [300, 300];
 // let res = edgevisibilty([start, end], [obj]);
 //
 // console.log(res);
-
-for (var t=0; t<obj.length; t++)
-{
-  let a = t;
-  let b = (t+1) % obj.length;
-
-  var tline = [obj[a], obj[b]];
-
-  let r = edgevisibilty([start, end], [tline]);
-
-  console.log(r);
-
-}
+//
+// for (var t=0; t<obj.length; t++)
+// {
+//   let a = t;
+//   let b = (t+1) % obj.length;
+//
+//   var tline = [obj[a], obj[b]];
+//
+//   let r = edgevisibilty([start, end], [tline]);
+//
+//   console.log(r);
+// }
 
 
 
@@ -127,47 +114,11 @@ for (var t=0; t<obj.length; t++)
 
 // draw_line(perp[0], perp[1], 'blue');
 
-
-
-// scene.push(obj);
-// draw_scene(scene, start, end);
-
-
-// calc_scene_graph(scene, start, end);
-
-function get_perpendicular(line, normal, size)
-{
-  let mx = (line[0][0] + line[1][0]) / 2;
-  let my = (line[0][1] + line[1][1]) / 2;
-  return [
-    [mx, my],
-    [mx + (normal[0] * size), my + (normal[1] * size)]
-  ];
-}
-
-
-function get_unit_normal(l)
-{
-  const X=0, Y=1;
-  let dx = l[1][X] - l[0][X];
-  let dy = l[1][Y] - l[0][Y];
-
-  let n = translate_to([[-dy, dx], [dy, -dx]], [0,0]);
-  let m = len([0,0], n[1]);
-
-  return m !==0 ? [n[1][0] / m, n[1][1] / m] : undefined;
-}
-
-function translate_to(l, o)
-{
-  let xd = o[0] - l[0][0];
-  let yd = o[1] - l[0][1];
-  return [
-    [l[0][0] + xd, l[0][1] + yd],
-    [l[1][0] + xd, l[1][1] + yd]
-  ];
-}
-
+scene.push(obj);
+//
+draw_scene(scene, start, end);
+calc_scene_graph(scene, start, end);
+//
 
 function calc_scene_graph(obstacles, start, end)
 {
@@ -222,6 +173,8 @@ function calc_scene_graph(obstacles, start, end)
         {
           //console.log("ok!")
           draw_line(testedge[0], testedge[1], 'magenta');
+        } else {
+          console.log("not visible")
         }
 
     }
@@ -244,25 +197,20 @@ function len(a, b)
 
 function edgevisibilty(testedge, edges)
 {
+  console.log(`Testing edge: ${testedge[0]}, ${testedge[1]}`);
+
   for (let t=0; t<edges.length; t++)
   {
     let e = edges[t];
 
-    // if (intersects(
-    //   testedge[0][0], testedge[0][1],
-    //   testedge[1][0], testedge[1][1],
-    //   e[0][0], e[0][1],
-    //   e[1][0], e[1][1],
-    // ))
-    //   return false;
+    let res = intersects(testedge[0], testedge[1], e[0], e[1]);
 
-
-    let res = doLineSegmentsIntersect(testedge[0], testedge[1], e[0], e[1]);
-
+    // If intersection, check it's not just the endpoints touching which is ok
     // console.log(`Intersecting: (${testedge[0]}, ${testedge[1]}) -> (${e[0]}, ${e[1]}) == ${res}`);
 
-    if (res)
+    if (res.intersect && !res.kiss)
       return false;
+      
   }
 
   return true;
@@ -313,7 +261,7 @@ function draw_line(a, b, c)
   ctx.stroke();
 }
 
-function intersects(a,b,c,d,  p,q,r,s)
+function intersects_old_doesnt_work_properly_100pc(a,b,c,d,  p,q,r,s)
 {
   var det, gamma, lambda;
   det = (c - a) * (s - q) - (r - p) * (d - b);
@@ -352,6 +300,38 @@ function gen_square(x, y, size)
 }
 
 
+function get_perpendicular(line, normal, size)
+{
+  let mx = (line[0][0] + line[1][0]) / 2;
+  let my = (line[0][1] + line[1][1]) / 2;
+  return [
+    [mx, my],
+    [mx + (normal[0] * size), my + (normal[1] * size)]
+  ];
+}
+
+
+function get_unit_normal(l)
+{
+  const X=0, Y=1;
+  let dx = l[1][X] - l[0][X];
+  let dy = l[1][Y] - l[0][Y];
+
+  let n = translate_to([[-dy, dx], [dy, -dx]], [0,0]);
+  let m = len([0,0], n[1]);
+
+  return m !==0 ? [n[1][0] / m, n[1][1] / m] : undefined;
+}
+
+function translate_to(l, o)
+{
+  let xd = o[0] - l[0][0];
+  let yd = o[1] - l[0][1];
+  return [
+    [l[0][0] + xd, l[0][1] + yd],
+    [l[1][0] + xd, l[1][1] + yd]
+  ];
+}
 
 
 //
