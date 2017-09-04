@@ -1,7 +1,7 @@
 
-import Vector2    from './Vector2';
-import gen_square from './Util';
-import Scene      from './Scene';
+import Vector2      from './Vector2';
+import {gen_square} from './Util';
+import Scene        from './Scene';
 
 
 // let scene = [];
