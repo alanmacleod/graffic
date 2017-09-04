@@ -60,11 +60,11 @@ let ctx = c.getContext('2d');
 
 
 let obj = gen_square(100, 100, 100);
-
-// let obj = [[10, 300], [300, 10]];
+let obj2 = gen_square(200, 310, 150);
+let obj3 = gen_square(500, 150, 200);
 
 let start = [10, 10];
-let end = [300, 300];
+let end = [450, 450];
 
 // let res = edgevisibilty([start, end], [obj]);
 //
@@ -115,6 +115,9 @@ let end = [300, 300];
 // draw_line(perp[0], perp[1], 'blue');
 
 scene.push(obj);
+scene.push(obj2);
+scene.push(obj3);
+
 //
 draw_scene(scene, start, end);
 calc_scene_graph(scene, start, end);

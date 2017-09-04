@@ -37,7 +37,6 @@ class Vec2
 }
 
 let Vector2 = new Vec2();
-console.log("Vector2 = ", Vector2.intersect)
 export default Vector2;
 
 

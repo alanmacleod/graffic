@@ -1,15 +1,29 @@
 
-import Vector2 from './Vector2';
+import Vector2    from './Vector2';
+import gen_square from './Util';
+import Scene      from './Scene';
 
-let scene = [];
-let c = document.getElementById("display");
-let context = c.getContext('2d');
 
-// Add geometry to scene
+// let scene = [];
+const c = document.getElementById("display");
+const context = c.getContext('2d');
 
-// Add start point node
+let scene = new Scene();
 
-// Add endpoint node
+// Start point and our goal
+let start = [10, 10];
+let end = [400, 400];
+
+scene.journey( start, end );
+
+// Add some obstacles to the scene
+scene.add( gen_square(100, 100, 100) );
+scene.add( gen_square(200, 310, 150) );
+scene.add( gen_square(500, 150, 200) );
+
+console.log(scene);
+
+scene.graph();
 
 // Line of sight test endpoint -> other endpoints (optimise! otherwise O(N2))
 

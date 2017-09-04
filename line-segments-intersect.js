@@ -53,7 +53,6 @@ function bbox_contained(a, b)
 
 function doLineSegmentsIntersect(p, p2, q, q2)
 {
-
   // var debug_string = `doLineSegmentsIntersect: (${p.x}, ${p.y})-(${p2.x}, ${p2.y})  with  (${q.x}, ${q.y})-(${q2.x}, ${q2.y})`;
 
 	var r = subtractPoints(p2, p);
