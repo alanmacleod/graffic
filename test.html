@@ -182,6 +182,8 @@ function calc_scene_graph(obstacles, start, end)
   // you'll see the diagonal (X==Y) is obv skipped. Everything above the
   // diagonal is tested, everything below is, ofc, a mirror of above.
 
+let ne = 0;
+
   for (let x=0; x<nodes.length-1; x++)
     for (let y=x+1; y<nodes.length; y++)
     {
@@ -200,11 +202,14 @@ function calc_scene_graph(obstacles, start, end)
         {
           //console.log("ok!")
           draw_line(testedge[0], testedge[1], '#ccccff');
-        } else {
-          console.log("not visible")
+          ne++;
+        // } else {
+        //   console.log("not visible")
         }
 
     }
+
+    console.log("num edges: ", ne);
 
   for (let e=0; e<edges.length; e++)
   {

@@ -61,7 +61,11 @@ export default class Scene
     // Add `nodes` indices to graph
 
     for (let i in nodes)
-      g.addvertex(i);
+      g.addvertex(Number(i));
+
+    // g.addedge(): perimeter of all obstacles
+
+    let ne=0;
 
     for (let x=0; x<nodes.length-1; x++)
       for (let y=x+1; y<nodes.length; y++)
@@ -77,29 +81,30 @@ export default class Scene
 
           if (edgevisibilty(testedge, edges))
           {
-            //draw_line(testedge[0], testedge[1], '#ccccff');
 
+            g.addedge(x, y, cost(A.vertex, B.vertex));
+            ne++;
           }
 
       }
 
-
-    // Add
-
-
-
-
-
+      console.log("ne = ", ne);
     return g;
   }
 
 }
 
+function cost(a, b)
+{
+  let dx = b[0] - a[0] // x2 - x1
+  let dy = b[1] - a[1];
+  return Math.sqrt( dx*dx + dy*dy );
 
+}
 
 function edgevisibilty(testedge, edges)
 {
-  console.log(`Testing edge: ${testedge[0]}, ${testedge[1]}`);
+  // console.log(`Testing edge: ${testedge[0]}, ${testedge[1]}`);
 
   for (let t=0; t<edges.length; t++)
   {
@@ -108,7 +113,7 @@ function edgevisibilty(testedge, edges)
     let res = intersects(testedge[0], testedge[1], e[0], e[1]);
 
     // If intersection, check it's not just the endpoints kissing which is ok
-    // in fact, it's more than 'ok' - it's exactly what we're looking for 
+    // in fact, it's more than 'ok' - it's exactly what we're looking for
     if (res.intersect && !res.kiss)
       return false;
 

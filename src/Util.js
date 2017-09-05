@@ -85,7 +85,7 @@ function doLineSegmentsIntersect(p, p2, q, q2)
 	if (uNumerator == 0 && denominator == 0) {
 		// They are coLlinear
 
-    console.log("Coplanar");
+    // console.log("Coplanar");
 
 		// Do they touch? (Are any of the points equal?)
 		if (equalPoints(p, q) || equalPoints(p, q2) || equalPoints(p2, q) || equalPoints(p2, q2)) {
@@ -97,7 +97,7 @@ function doLineSegmentsIntersect(p, p2, q, q2)
 		}
 		// Do they overlap? (Are all the point differences in either direction the same sign)
 
-    console.log("Points DONT touch");
+    // console.log("Points DONT touch");
 
 		return {
       intersect:
