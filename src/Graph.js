@@ -63,9 +63,23 @@ export default class Graph
 
     }
 
+    let done = false;
+    let c = end;
+    let seq =[end];
+
+    // console.log(c);
+
+    do {
+
+      c = prev[c];
+
+      //console.log(c);
+      seq.push(c);
+
+    } while(c != start);
 
 
-
+    return seq.reverse();
 
   }
 
