@@ -19,9 +19,8 @@ scene.add( gen_square(100, 100, 100) );
 scene.add( gen_square(200, 310, 150) );
 scene.add( gen_square(500, 150, 200) );
 
-let graph = scene.graph( start, end );
+let route = scene.solve( start, end );
 
-console.log(graph);
 
 // Line of sight test endpoint -> other endpoints (optimise! otherwise O(N2))
 

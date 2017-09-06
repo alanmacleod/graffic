@@ -7,7 +7,6 @@ export default class Scene
   constructor()
   {
     this.objects = [];
-    this.graph = null;
   }
 
   add(object)
@@ -15,14 +14,14 @@ export default class Scene
     this.objects.push(object);
   }
 
-  solve()
+  solve(start, end)
   {
-    if (!this.graph) return;
-    this.graph.shortest(0, 1); // [0] start, [1] end (see .graph())
+    let g = this._graph(start, end);
+    return g.shortest(0, 1); // [0] start, [1] end (see .graph())
   }
 
   // Extract a scenegraph from our continuous euclidean geometry
-  graph(start, end)
+  _graph(start, end)
   {
     let nodes = [];
     let edges = [];
@@ -59,12 +58,12 @@ export default class Scene
         });
     }
 
-    this.graph = new Graph();
+    let g = new Graph();
 
     // Add `nodes` indices to graph
 
     for (let i in nodes)
-      this.graph.addvertex(Number(i));
+      g.addvertex(Number(i));
 
     // g.addedge(): perimeter of all obstacles
 
@@ -84,12 +83,12 @@ export default class Scene
 
           if (edgevisibilty(testedge, edges))
           {
-            this.graph.addedge(x, y, cost(A.vertex, B.vertex));
+            g.addedge(x, y, cost(A.vertex, B.vertex));
           }
 
       }
 
-    return this.graph;
+    return g;
   }
 
 }
