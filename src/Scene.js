@@ -14,22 +14,19 @@ export default class Scene
     this.objects.push(object);
   }
 
-  journey(start, end)
-  {
-    this.start = start;
-    this.end = end;
-  }
-
-  // Calculate a continuous graph from our euclidean geometry
-  graph()
+  // Extract a scenegraph from our continuous euclidean geometry
+  graph(start, end)
   {
     let nodes = [];
     let edges = [];
 
+    // This is just used to make sure shapes don't perform
+    // intersection tests on themselves (across their own vertices)
     let shape_id = 1;
 
-    nodes.push( {vertex: this.start,  shape: shape_id++} );
-    nodes.push( {vertex: this.end,    shape: shape_id++} );
+
+    nodes.push( {vertex: start,  shape: shape_id++} );
+    nodes.push( {vertex: end,    shape: shape_id++} );
 
     for (let o of this.objects)
     {
@@ -81,14 +78,11 @@ export default class Scene
 
           if (edgevisibilty(testedge, edges))
           {
-
             g.addedge(x, y, cost(A.vertex, B.vertex));
-            ne++;
           }
 
       }
 
-      console.log("ne = ", ne);
     return g;
   }
 
