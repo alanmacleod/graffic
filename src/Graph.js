@@ -23,4 +23,9 @@ export default class Graph
     this.numedges++;
   }
 
+  shortest(start, end)
+  {
+
+  }
+
 }

@@ -7,11 +7,18 @@ export default class Scene
   constructor()
   {
     this.objects = [];
+    this.graph = null;
   }
 
   add(object)
   {
     this.objects.push(object);
+  }
+
+  solve()
+  {
+    if (!this.graph) return;
+    this.graph.shortest(0, 1); // [0] start, [1] end (see .graph())
   }
 
   // Extract a scenegraph from our continuous euclidean geometry
@@ -20,13 +27,12 @@ export default class Scene
     let nodes = [];
     let edges = [];
 
-    // This is just used to make sure shapes don't perform
+    // This is just a temp value used to make sure shapes don't perform
     // intersection tests on themselves (across their own vertices)
     let shape_id = 1;
 
-
-    nodes.push( {vertex: start,  shape: shape_id++} );
-    nodes.push( {vertex: end,    shape: shape_id++} );
+    nodes.push( {vertex: start,  shape: shape_id++} ); // [0] start (see .solve())
+    nodes.push( {vertex: end,    shape: shape_id++} ); // [1] end
 
     for (let o of this.objects)
     {
@@ -53,12 +59,12 @@ export default class Scene
         });
     }
 
-    let g = new Graph();
+    this.graph = new Graph();
 
     // Add `nodes` indices to graph
 
     for (let i in nodes)
-      g.addvertex(Number(i));
+      this.graph.addvertex(Number(i));
 
     // g.addedge(): perimeter of all obstacles
 
@@ -78,12 +84,12 @@ export default class Scene
 
           if (edgevisibilty(testedge, edges))
           {
-            g.addedge(x, y, cost(A.vertex, B.vertex));
+            this.graph.addedge(x, y, cost(A.vertex, B.vertex));
           }
 
       }
 
-    return g;
+    return this.graph;
   }
 
 }
