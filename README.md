@@ -12,5 +12,11 @@ I wanted something that could find a route between two points in continuous Eucl
 
 ![alt tag](https://raw.githubusercontent.com/alanmacleod/graffic/master/pub/screenshot.png)
 
+To make this happen, **graffic** first extracts a valid scene graph from the supplied, arbitrary geometry by enumerating nodes and performing point-to-point visibility tests O(N²÷2). With a graph, we can then apply Dijkstra's algorithm to calculate the shortest route.
 
-To make this happen, **graffic** first extracts a valid scene graph from the supplied, arbitrary geometry by doing point-to-point intersection tests etc. With a graph, we can then apply Dijkstra's algorithm to calculate the shortest route.
+### Some fairly obvious ideas for optimisations:
+
+- Enhanced Dijkstra (minheap), look-ahead, or perhaps A*
+- BBOX start -> end selection of scene geometry to minimise vis tests
+- Spatial indexing
+- Only rebuild the parts of the graph that have changed/moved etc
