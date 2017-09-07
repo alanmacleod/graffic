@@ -8,6 +8,11 @@ export default class Renderer
     this.context = this.element.getContext('2d');
   }
 
+  clear()
+  {
+    this.context.clearRect(0, 0, this.element.width, this.element.height);
+  }
+
   render(objects, colour = '#000', width = 2)
   {
     if (!Array.isArray(objects)) return;
@@ -17,7 +22,7 @@ export default class Renderer
     {
       const p = objects;
       this.context.beginPath();
-      this.context.arc(p[0], p[1], width, 0, 2 * Math.PI, false);
+      this.context.arc(p[0]>>0, p[1]>>0, width, 0, 2 * Math.PI, false);
       this.context.fillStyle = colour;
       this.context.fill();
     } else {
@@ -40,8 +45,8 @@ export default class Renderer
     this.context.lineWidth = w;
     this.context.strokeStyle = c || 'black';
     this.context.beginPath();
-    this.context.moveTo(a[0],a[1]);
-    this.context.lineTo(b[0],b[1]);
+    this.context.moveTo(a[0]>>0,a[1]>>0);
+    this.context.lineTo(b[0]>>0,b[1]>>0);
     this.context.stroke();
   }
 

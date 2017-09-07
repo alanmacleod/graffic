@@ -59,7 +59,7 @@ export default class Graph
         }
 
       }
-    }    
+    }
 
     let done = false;
     let c = end, seq =[end];
