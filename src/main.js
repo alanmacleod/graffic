@@ -1,7 +1,7 @@
 
-import {Square}     from './Util';
 import Scene        from './Scene';
 import Renderer     from './Renderer';
+import {Square, rotate, translate}     from './Util';
 
 let renderer = new Renderer('display');
 let scene = new Scene();
@@ -10,11 +10,14 @@ let scene = new Scene();
 let start = [10, 10];
 let end = [380, 420];
 
+// For the shape animations
+let rotx = 500, roty = 150;
+let motion = 0, rota = 0;
+
 // Add some obstacles to the scene
 let sq_small = Square(120, 100, 100);
-// let sq_small = Square(334+50, 314+50, 100);
 let sq_med   = Square(200, 310, 150);
-let sq_large = Square(500, 150, 200);
+let sq_large = Square(rotx, roty, 200);
 
 let obstacles = [sq_small, sq_med, sq_large];
 
@@ -26,12 +29,6 @@ requestAnimationFrame( frame );
 function frame()
 {
   requestAnimationFrame( frame );
-
-  // Throttle a bit
-  if (((Date.now() / 5)>>0) & 1)
-    return;
-
-  // if ((Date.now() / 10)>>0 & 1) return;
 
   // Find the shortest path. Two things happen here:
   //    1. A Scene graph is extracted from our scene geometry
@@ -58,14 +55,11 @@ function frame()
   // Now display the found route!
   renderer.render( [route], '#f00', 3 );
 
-  translate(sq_small, 1, 1);
-}
+  // Animation
+  motion += 0.05; // Sinusoidal
+  translate(sq_small, 3 * Math.sin(motion * 0.25 * Math.PI), 0);
 
-function translate(shape, dx, dy)
-{
-  for (let pair of shape)
-  {
-    pair[0] += dx;
-    pair[1] += dy;
-  }
+  // rotate the big square
+  rotate(sq_large, rotx, roty, 0.005);
+
 }

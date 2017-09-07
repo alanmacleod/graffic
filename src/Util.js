@@ -19,6 +19,43 @@ function Square(x, y, size)
   return sq;
 }
 
+function rotate(shape, rx, ry, da)
+{
+  for (let pair of shape)
+  {
+    pair = rotate_point(rx, ry, da, pair);
+  }
+
+}
+
+function translate(shape, dx, dy)
+{
+  for (let pair of shape)
+  {
+    pair[0] += dx;
+    pair[1] += dy;
+  }
+}
+
+function rotate_point(cx, cy, angle, p)
+{
+  let s = Math.sin(angle);
+  let c = Math.cos(angle);
+
+  // translate point back to origin:
+  p[0] -= cx;
+  p[1] -= cy;
+
+  // rotate point
+  let xnew = p[0] * c - p[1] * s;
+  let ynew = p[0] * s + p[1] * c;
+
+  // translate point back:
+  p[0] = xnew + cx;
+  p[1] = ynew + cy;
+
+  return p;
+}
 
 /**
  * @author Peter Kelley
@@ -202,4 +239,4 @@ function allEqual(args) {
 
 
 
-export {Square, intersects} ;
+export {Square, intersects, rotate, translate} ;
