@@ -21,7 +21,15 @@ export default class Scene
   solve(start, end)
   {
     this.graph = this._graph(start, end);
-    return this.graph.shortest(0, 1); // [0] start, [1] end (see .graph())
+    let nodes = this.graph.shortest(0, 1); // [0] start, [1] end (see .graph())
+
+    let route = [];
+    for (let n of nodes)
+    {
+      route.push(this._vis.nodes[ n ]);
+    }
+
+    return route;
   }
 
   vis()
