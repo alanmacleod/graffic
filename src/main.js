@@ -2,6 +2,7 @@
 import Scene                            from './Scene';
 import Renderer                         from './Renderer';
 import {Square, rotate, translate}      from './Util';
+import {point_in_polygon}               from './Util';
 
 const element = 'display';
 
@@ -23,8 +24,12 @@ let motion = 0, rota = 0;
 let sq_small = Square(60, 100, 100);
 let sq_large = Square(rotx, roty, 325);
 
+//
+// let area = [
+//   [0, 0], [100, 0], [100, 100], [0, 100], [0, 0]
+// ];
+// console.log( point_in_polygon( [10, 10], area ) );
 
-console.log(sq_small);
 
 // Some static
 let others   = [ Square(50, 250, 50), Square(500, 100, 150), Square(620, 400, 100) ];

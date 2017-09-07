@@ -67,7 +67,8 @@ function point_in_polygon(point, vertices)
 
     let seg = subtractPoints(b, a);
     let pt = subtractPoints(point, a);
-    let inside = (crossProduct(seg, pt) <= 0);
+    let inside = (crossProduct(seg, pt) > 0);
+    // console.log(inside);
     if (!inside) return false;
   }
 
