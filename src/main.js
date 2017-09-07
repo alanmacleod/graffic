@@ -3,8 +3,12 @@ import Scene        from './Scene';
 import Renderer     from './Renderer';
 import {Square, rotate, translate}     from './Util';
 
-let renderer = new Renderer('display');
+const element = 'display';
+
+let renderer = new Renderer(element);
 let scene = new Scene();
+
+let debug = true;
 
 // Start point and our goal
 let start = [10, 10];
@@ -40,12 +44,15 @@ function frame()
 
   renderer.clear();
 
-  // Draw the scene graph nodes
-  for (let n of vis.nodes)
-    renderer.render( n, '#ddd', 5 );
+  if (debug)
+  {
+    // Draw the scene graph nodes
+    for (let n of vis.nodes)
+      renderer.render( n, '#ddd', 5 );
 
-  // Draw the graph edges
-  renderer.render( vis.edges, '#ddd' );
+    // Draw the graph edges
+    renderer.render( vis.edges, '#ddd' );
+  }
 
   // Render the original scene geometry on top of the graph
   renderer.render( start, '#0a0', 6 );
@@ -61,5 +68,15 @@ function frame()
 
   // rotate the big square
   rotate(sq_large, rotx, roty, 0.005);
+
+}
+
+document.getElementById('cb_debug').onclick = (e, c) => {
+  debug = e.srcElement.checked;
+}
+
+document.getElementById(element).onmousemove = e => {
+
+  end = [e.clientX, e.clientY];
 
 }
