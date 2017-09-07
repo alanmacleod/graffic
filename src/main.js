@@ -8,6 +8,7 @@ const element = 'display';
 
 let renderer = new Renderer(element);
 let scene = new Scene();
+let info = document.getElementById('infoText');
 
 // Show/hide the scene graph
 let debug = true;
@@ -15,6 +16,7 @@ let debug = true;
 // Start point and our goal
 let start = [10, 10];
 let end = [380, 420];
+let mx = end[0], my = [1];
 
 // For the shape animations
 let rotx = 300, roty = 400;
@@ -24,21 +26,16 @@ let motion = 0, rota = 0;
 let sq_small = Square(60, 100, 100);
 let sq_large = Square(rotx, roty, 325);
 
-//
-// let area = [
-//   [0, 0], [100, 0], [100, 100], [0, 100], [0, 0]
-// ];
-// console.log( point_in_polygon( [10, 10], area ) );
 
+let obstacles = [
+  // Dynamic
+  sq_small, sq_large,
+  // Static
+  Square(50, 250, 50), Square(500, 100, 150), Square(620, 400, 100)
+];
 
-// Some static
-let others   = [ Square(50, 250, 50), Square(500, 100, 150), Square(620, 400, 100) ];
-
-// Add them to the scene
-scene.add( sq_small );
-scene.add( sq_large );
-
-for (let o of others)
+// Add them all to the scene
+for (let o of obstacles)
   scene.add( o );
 
 frame();
@@ -46,6 +43,10 @@ frame();
 function frame()
 {
   requestAnimationFrame( frame );
+
+  hide_info();
+
+  let inside = dodge_nullspace();
 
   // Find the shortest path. Two things happen here:
   //    1. A Scene graph is extracted from our scene geometry
@@ -61,19 +62,25 @@ function frame()
   {
     // Draw the scene graph nodes
     for (let n of vis.nodes)
-      renderer.render( n, '#ddd', 5 );
+      renderer.render( n, '#bbb', 5 );
 
     // Draw the graph edges
-    renderer.render( vis.edges, '#ddd' );
+    renderer.render( vis.edges, '#eee' );
   }
 
   // Render the original scene geometry on top of the graph
   renderer.render( start, '#0a0', 6 );
-  renderer.render( end, '#08f', 6 );
+  renderer.render( end, '#0a0', 6 );
   renderer.render( scene.objects, '#333' );
 
+  if (inside >= 0)
+  {
+    show_info("End point inside solid object!")
+    renderer.render( [scene.objects[inside]], '#f00', 5 );
+  }
+
   // Now display the found route!
-  renderer.render( [route], '#f00', 3 );
+  renderer.render( [route], '#00f', 3 );
 
   // Animation
   motion += 0.05; // Sinusoidal
@@ -88,6 +95,43 @@ document.getElementById('cb_debug').onclick = (e, c) => {
   debug = e.srcElement.checked;
 }
 
+
 document.getElementById(element).onmousemove = e => {
-  end = [e.clientX, e.clientY];
+  // Save the last known mouse position
+  mx = e.clientX;
+  my = e.clientY;
+}
+
+function show_info(text)
+{
+  info.innerHTML = text;
+  info.style.display = 'block';
+}
+function hide_info()
+{
+  info.style.display = 'none';
+}
+
+// This prevents a bit of a mess from happening
+// when the mouse cursor drifts *inside* a supposedly solid shape
+function dodge_nullspace()
+{
+  // Our tentative new coordinate (last known mouse pos)
+  let c = [mx, my];
+
+  // Check the current position of each of our solid shapes
+  for (let i in obstacles)
+  {
+    let o = obstacles[i>>0];
+    // Oh no!
+    if (point_in_polygon(c, o))  // simple convex-only test
+    {
+      // Set the endpoint to the start to remove the red line and cursor
+      end = start;
+      return i;
+    }
+  }
+  // All good, set the endpoint to the last known mouse pos
+  end = c;
+  return -1;
 }
