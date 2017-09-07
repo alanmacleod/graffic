@@ -14,6 +14,7 @@ export default class Graph
     this.edges[n] = [];
   }
 
+  // adjaceny edge list
   addedge(v1, v2, cost)
   {
     this.edges[v1].push({dest:v2, cost});
@@ -41,7 +42,6 @@ export default class Graph
     // 'Visit' each node only once, in turn
     while( (current_node = unvisited.shift()) != null )
     {
-
       // For each node, 'check' its neighbours.
       // While we only 'visit' each node once, it's this repeated 'check'ing
       // (and occasional recalculating) of neighbours that allows us to find

@@ -16,18 +16,25 @@ let start = [10, 10];
 let end = [380, 420];
 
 // For the shape animations
-let rotx = 500, roty = 150;
+let rotx = 300, roty = 400;
 let motion = 0, rota = 0;
 
-// Create some simple obstacles (accepts simple n-sided polygons)
-let sq_small = Square(120, 100, 100);
-let sq_med   = Square(200, 310, 150);
-let sq_large = Square(rotx, roty, 200);
+// Create some dynamic obstacles
+let sq_small = Square(60, 100, 100);
+let sq_large = Square(rotx, roty, 325);
+
+
+console.log(sq_small);
+
+// Some static
+let others   = [ Square(50, 250, 50), Square(500, 100, 150), Square(620, 400, 100) ];
 
 // Add them to the scene
 scene.add( sq_small );
-scene.add( sq_med );
 scene.add( sq_large );
+
+for (let o of others)
+  scene.add( o );
 
 frame();
 

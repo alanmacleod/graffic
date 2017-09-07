@@ -57,6 +57,24 @@ function rotate_point(cx, cy, angle, p)
   return p;
 }
 
+
+function point_in_polygon(point, vertices)
+{
+  for (let i=0; i<vertices.length-1; i++)
+  {
+    let a = vertices[i];
+    let b = vertices[i+1];
+
+    let seg = subtractPoints(b, a);
+    let pt = subtractPoints(point, a);
+    let inside = (crossProduct(seg, pt) <= 0);
+    if (!inside) return false;
+  }
+
+  return true;
+}
+
+
 /**
  * @author Peter Kelley
  * @author pgkelley4@gmail.com
@@ -188,7 +206,11 @@ function doLineSegmentsIntersect(p, p2, q, q2)
  * @return the cross product result as a float
  */
 function crossProduct(point1, point2) {
-	return point1.x * point2.y - point1.y * point2.x;
+
+  if (Array.isArray(point1))
+    return point1[0] * point2[1] - point1[1] * point2[0];
+  else
+	   return point1.x * point2.y - point1.y * point2.x;
 }
 
 /**
@@ -200,11 +222,17 @@ function crossProduct(point1, point2) {
  * @return the subtraction result as a point object
  */
 function subtractPoints(point1, point2) {
-	var result = {};
-	result.x = point1.x - point2.x;
-	result.y = point1.y - point2.y;
 
-	return result;
+  if (Array.isArray(point1))
+  {
+    return [ point1[0] - point2[0], point1[1] - point2[1] ];
+  } else {
+    var result = {};
+    result.x = point1.x - point2.x;
+    result.y = point1.y - point2.y;
+
+    return result;
+  }
 }
 
 /**
@@ -239,4 +267,4 @@ function allEqual(args) {
 
 
 
-export {Square, intersects, rotate, translate} ;
+export {Square, intersects, rotate, translate, point_in_polygon} ;
