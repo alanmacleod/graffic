@@ -1,13 +1,14 @@
 
-import Scene        from './Scene';
-import Renderer     from './Renderer';
-import {Square, rotate, translate}     from './Util';
+import Scene                            from './Scene';
+import Renderer                         from './Renderer';
+import {Square, rotate, translate}      from './Util';
 
 const element = 'display';
 
 let renderer = new Renderer(element);
 let scene = new Scene();
 
+// Show/hide the scene graph
 let debug = true;
 
 // Start point and our goal
@@ -18,17 +19,17 @@ let end = [380, 420];
 let rotx = 500, roty = 150;
 let motion = 0, rota = 0;
 
-// Add some obstacles to the scene
+// Create some simple obstacles (accepts simple n-sided polygons)
 let sq_small = Square(120, 100, 100);
 let sq_med   = Square(200, 310, 150);
 let sq_large = Square(rotx, roty, 200);
 
-let obstacles = [sq_small, sq_med, sq_large];
+// Add them to the scene
+scene.add( sq_small );
+scene.add( sq_med );
+scene.add( sq_large );
 
-for (let o of obstacles)
-  scene.add( o );
-
-requestAnimationFrame( frame );
+frame();
 
 function frame()
 {
