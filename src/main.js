@@ -25,8 +25,12 @@ requestAnimationFrame( frame );
 
 function frame()
 {
+  requestAnimationFrame( frame );
 
-  console.log(((Date.now() / 10)>>0) & 1);
+  // Throttle a bit
+  if (((Date.now() / 5)>>0) & 1)
+    return;
+
   // if ((Date.now() / 10)>>0 & 1) return;
 
   // Find the shortest path. Two things happen here:
@@ -54,10 +58,7 @@ function frame()
   // Now display the found route!
   renderer.render( [route], '#f00', 3 );
 
-  requestAnimationFrame( frame );
-
   translate(sq_small, 1, 1);
-
 }
 
 function translate(shape, dx, dy)
