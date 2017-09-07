@@ -1,6 +1,6 @@
 
 
-function gen_square(x, y, size)
+function Square(x, y, size)
 {
   let hsize = size>>1;
   let sq = [];
@@ -202,4 +202,4 @@ function allEqual(args) {
 
 
 
-export {gen_square, intersects} ;
+export {Square, intersects} ;
