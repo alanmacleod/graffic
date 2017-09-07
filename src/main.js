@@ -24,8 +24,8 @@ let route = scene.solve( start, end );
 let vis = scene.vis();
 
 // Draw the scene graph nodes
-for (let t=0; t<vis.nodes.length; t++)
-  renderer.render( vis.nodes[t], '#ddd', 5 );
+for (let n of vis.nodes)
+  renderer.render( n, '#ddd', 5 );
 
 // Draw the graph edges
 renderer.render( vis.edges, '#ddd' );

@@ -22,6 +22,8 @@ export default class Graph
     this.numedges++;
   }
 
+  // Super basic implementation of Dijkstra's algorithm
+  // Directly from this recipe: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Algorithm
   shortest(start, end)
   {
     let current_node;
@@ -29,11 +31,9 @@ export default class Graph
     let prev = [];
     let unvisited = [];
 
-    for (let i=1; i<this.vertices.length; i++)
-      dist[i] = Number.MAX_VALUE;
-
     for (let i=0; i<this.vertices.length; i++)
     {
+      if (i) dist[i] = Number.MAX_VALUE;
       unvisited[i] = i;
       prev[i] = null;
     }
@@ -59,24 +59,15 @@ export default class Graph
         }
 
       }
-
-    }
+    }    
 
     let done = false;
-    let c = end;
-    let seq =[end];
-
-    // console.log(c);
+    let c = end, seq =[end];
 
     do {
-
       c = prev[c];
-
-      //console.log(c);
       seq.push(c);
-
     } while(c != start);
-
 
     return seq.reverse();
 

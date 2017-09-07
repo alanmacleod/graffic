@@ -21,6 +21,7 @@ export default class Renderer
       this.context.fillStyle = colour;
       this.context.fill();
     } else {
+    // list of shapes type
 
       for (let o of objects)
       {
