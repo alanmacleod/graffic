@@ -77,7 +77,5 @@ document.getElementById('cb_debug').onclick = (e, c) => {
 }
 
 document.getElementById(element).onmousemove = e => {
-
   end = [e.clientX, e.clientY];
-
 }
