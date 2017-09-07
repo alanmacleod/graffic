@@ -32,8 +32,8 @@ renderer.render( vis.edges, '#ddd' );
 
 // Render the original scene geometry on top of the graph
 renderer.render( start, '#0a0', 6 );
-renderer.render( end, '#a00', 6 );
+renderer.render( end, '#08f', 6 );
 renderer.render( scene.objects, '#333' );
 
 // Now display the found route!
-renderer.render( [route], '#0ff', 3 );
+renderer.render( [route], '#f00', 3 );
