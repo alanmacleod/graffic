@@ -38,8 +38,16 @@ export default class Graph
       prev[i] = null;
     }
 
+    // 'Visit' each node only once, in turn
     while( (current_node = unvisited.shift()) != null )
     {
+
+      // For each node, 'check' its neighbours.
+      // While we only 'visit' each node once, it's this repeated 'check'ing
+      // (and occasional recalculating) of neighbours that allows us to find
+      // the shortest route through the graph from our start point.
+      // In fact, the inherent result of the algo is that we find the shortest
+      // path to *every* point in the graph
       for (let t=0; t<this.edges[current_node].length; t++)
       {
         // vertex/node ID
