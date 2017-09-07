@@ -2,12 +2,9 @@
 import Vector2      from './Vector2';
 import {gen_square} from './Util';
 import Scene        from './Scene';
+import Renderer     from './Renderer';
 
-
-// let scene = [];
-const c = document.getElementById("display");
-const context = c.getContext('2d');
-
+let renderer = new Renderer('display');
 let scene = new Scene();
 
 // Start point and our goal
@@ -21,13 +18,13 @@ scene.add( gen_square(500, 150, 200) );
 
 let route = scene.solve( start, end );
 
-console.log(route);
+renderer.render( start, '#0a0' );
+renderer.render( end, '#a00' );
+renderer.render( scene.objects, '#333' );
 
+console.info("NOW RENDERING VIS...");
 
-// Line of sight test endpoint -> other endpoints (optimise! otherwise O(N2))
+// Now render a visualisation of the actual scenegraph
+let vis = scene.vis();
 
-
-
-// Create scene graph from vis endpoints
-
-// Use Dijkstra or A* to find shortest route
+renderer.render( vis.edges, '#bbb' );

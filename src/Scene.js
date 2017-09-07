@@ -7,6 +7,10 @@ export default class Scene
   constructor()
   {
     this.objects = [];
+    this.graph = null;
+
+    // This is just for visualising the graph
+    this._vis = null;
   }
 
   add(object)
@@ -16,8 +20,13 @@ export default class Scene
 
   solve(start, end)
   {
-    let g = this._graph(start, end);
-    return g.shortest(0, 1); // [0] start, [1] end (see .graph())
+    this.graph = this._graph(start, end);
+    return this.graph.shortest(0, 1); // [0] start, [1] end (see .graph())
+  }
+
+  vis()
+  {
+    return this._vis;
   }
 
   // Extract a scenegraph from our continuous euclidean geometry
@@ -26,16 +35,20 @@ export default class Scene
     let nodes = [];
     let edges = [];
 
+    // For visualising the graph
+    this._vis = { nodes: [], edges: [] };
+
     // This is just a temp value used to make sure shapes don't perform
     // intersection tests on themselves (across their own vertices)
     let shape_id = 1;
 
+    // These first two nodes in the graph are a special case
     nodes.push( {vertex: start,  shape: shape_id++} ); // [0] start (see .solve())
     nodes.push( {vertex: end,    shape: shape_id++} ); // [1] end
 
+    // extract each obstacle's edges and nodes
     for (let o of this.objects)
     {
-      // extract each obstacle's edges and nodes
       shape_id++;
 
       let e;
@@ -49,7 +62,6 @@ export default class Scene
         });
 
       }
-
       // this isn't a closed ring (matching start and endp)
       if (!equals(o[0], o[e]))
         nodes.push({
@@ -61,9 +73,13 @@ export default class Scene
     let g = new Graph();
 
     // Add `nodes` indices to graph
-
     for (let i in nodes)
+    {
       g.addvertex(Number(i));
+
+      // For visualising the graph
+      this._vis.nodes.push(nodes[Number(i)].vertex);
+    }
 
     // g.addedge(): perimeter of all obstacles
 
@@ -84,6 +100,9 @@ export default class Scene
           if (edgevisibilty(testedge, edges))
           {
             g.addedge(x, y, cost(A.vertex, B.vertex));
+
+            // Just for visualising the graph, non-essential:
+            this._vis.edges.push([A.vertex, B.vertex]);
           }
 
       }
@@ -92,6 +111,8 @@ export default class Scene
   }
 
 }
+
+
 
 function cost(a, b)
 {
