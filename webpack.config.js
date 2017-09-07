@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/main.js',
   devtool: "inline-sourcemap",
   output: {
-    filename: 'bundle.asm', /* wrong extension for the lulz */
+    filename: 'bundle.js',
     path: path.resolve(__dirname,'build')
   },
   module: {

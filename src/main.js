@@ -17,7 +17,7 @@ scene.add( Square(500, 150, 200) );
 
 // Find the shortest path. Two things happen here:
 //    1. A Scene graph is extracted from our scene geometry
-//    2. Dijkstra's method is used to find a quick route across the graph
+//    2. Dijkstra's method is used to find the optimal route across the graph
 let route = scene.solve( start, end );
 
 // Get a visualisation of the actual scenegraph
