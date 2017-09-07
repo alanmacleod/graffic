@@ -12,6 +12,7 @@ let end = [380, 420];
 
 // Add some obstacles to the scene
 let sq_small = Square(120, 100, 100);
+// let sq_small = Square(334+50, 314+50, 100);
 let sq_med   = Square(200, 310, 150);
 let sq_large = Square(500, 150, 200);
 
@@ -24,6 +25,10 @@ requestAnimationFrame( frame );
 
 function frame()
 {
+
+  console.log(((Date.now() / 10)>>0) & 1);
+  // if ((Date.now() / 10)>>0 & 1) return;
+
   // Find the shortest path. Two things happen here:
   //    1. A Scene graph is extracted from our scene geometry
   //    2. Dijkstra's method is used to find the optimal route across the graph
@@ -51,7 +56,7 @@ function frame()
 
   requestAnimationFrame( frame );
 
-  translate(sq_small, 0.1, 0.1);
+  translate(sq_small, 1, 1);
 
 }
 

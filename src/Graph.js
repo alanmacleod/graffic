@@ -61,8 +61,11 @@ export default class Graph
       }
     }
 
-    let done = false;
     let c = end, seq =[end];
+
+    // failed for some reason, e.g. impossible point inside nullspace etc
+    if (prev[c] == null)
+      return [];
 
     do {
       c = prev[c];
