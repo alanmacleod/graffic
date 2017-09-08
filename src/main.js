@@ -70,9 +70,9 @@ function frame()
   }
 
   // // Render the original scene geometry on top of the graph
-  renderer.render( start, '#0a0', 6 );
-  renderer.render( end, '#0a0', 6 );
-  renderer.render( scene.objects, '#333' );
+  // renderer.render( start, '#0a0', 6 );
+  // renderer.render( end, '#0a0', 6 );
+  // renderer.render( scene.objects, '#333' );
 
   if (inside >= 0)
   {
@@ -92,22 +92,17 @@ function frame()
 
 }
 
-document.getElementById('cb_debug').onclick = (e, c) => {
-  debug = e.srcElement.checked;
-}
+document.getElementById('cb_debug').onclick = (e, c) => { debug = e.srcElement.checked; }
 
-
-document.getElementById(element).onmousemove = e => {
-  // Save the last known mouse position
-  mx = e.clientX;
-  my = e.clientY;
-}
+// Save the last known mouse position
+document.getElementById(element).onmousemove = e => { mx = e.clientX; my = e.clientY; }
 
 function show_info(text)
 {
   info.innerHTML = text;
   info.style.display = 'block';
 }
+
 function hide_info()
 {
   info.style.display = 'none';

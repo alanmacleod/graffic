@@ -49,12 +49,14 @@ export default class Scene
     this._vis = { nodes: [], edges: [] };
 
     // This is just a temp value used to make sure shapes don't perform
-    // intersection tests on themselves (across their own vertices)
+    // intersection tests on themselves (their own vertices, crossing internally)
     let shape_id = 1;
 
     // These first two nodes in the graph are a special case
     nodes.push( {vertex: start,  shape: shape_id++} ); // [0] start (see .solve())
     nodes.push( {vertex: end,    shape: shape_id++} ); // [1] end
+
+    let gedges = [];
 
     // extract each obstacle's edges and nodes
     for (let o of this.objects)
@@ -62,8 +64,19 @@ export default class Scene
       shape_id++;
 
       let e;
+      let base = nodes.length;
       for (e=0; e<o.length-1; e++)
       {
+
+        // Ffs alan what a mess
+        // let v1 = base + e;
+        // let v2 = (base + e + 1) % (o.length-1);
+        //
+        // gedges.push({
+        //   index:[v1, v2],
+        //   vertex: [o[e], o[e+1]]
+        // });
+        //
         edges.push([o[e], o[e+1]]);
 
         nodes.push({
@@ -89,9 +102,23 @@ export default class Scene
       this._vis.nodes.push(nodes[Number(i)].vertex);
     }
 
+    // for (let ge of gedges)
+    // {
+    //   g.addedge(ge.index[0], ge.index[1], cost(ge.vertex[0], ge.vertex[1]));
+    //   this._vis.edges.push([ge.vertex[0], ge.vertex[1]]);
+    // }
 
     // Add obstacles' permimeter edges to the graph
-
+    //
+    // for (let o of this.objects)
+    // {
+    //   let cords = "";
+    //   for (let e of o)
+    //   {
+    //     cords += `(${e}), `;
+    //   }
+    //   console.log(cords);
+    // }
     // g.addedge(): perimeter of all obstacles
 
     let ne=0;
