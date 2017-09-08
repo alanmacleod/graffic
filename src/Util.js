@@ -19,13 +19,28 @@ function Square(x, y, size)
   return sq;
 }
 
+// equilateral
+function Triangle(x, y, size)
+{
+  let angle = 0;
+  let r = (size/2.0)/Math.sin(Math.PI*60/180);
+  let tri = [];
+
+  for(let i=0; i<=3; i++)
+  {
+    tri.push([
+      x + r * Math.cos(angle + (i % 3) * 2 * Math.PI/3),
+      y + r * Math.sin(angle + (i % 3) * 2 * Math.PI/3)
+    ]);
+  }
+
+  return tri;
+}
+
 function rotate(shape, rx, ry, da)
 {
   for (let pair of shape)
-  {
     pair = rotate_point(rx, ry, da, pair);
-  }
-
 }
 
 function translate(shape, dx, dy)
@@ -97,7 +112,8 @@ function point_in_polygon(point, vertices)
 
 function intersects(ap, ap2, aq, aq2)
 {
-  // AM: Note to developers, using named properties for vectors is retarded. thanks.
+  // AM: Note to developers, please don't use named properties for vectors
+  //     It's daft. Use arrays.
   return doLineSegmentsIntersect( {x: ap[0], y: ap[1]}, {x: ap2[0], y: ap2[1]},
                                   {x: aq[0], y: aq[1]}, {x: aq2[0], y: aq2[1]} );
 }
@@ -268,4 +284,4 @@ function allEqual(args) {
 
 
 
-export {Square, intersects, rotate, translate, point_in_polygon} ;
+export {Square, Triangle, intersects, rotate, translate, point_in_polygon} ;

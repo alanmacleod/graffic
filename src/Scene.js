@@ -43,6 +43,8 @@ export default class Scene
     let nodes = [];
     let edges = [];
 
+    let g = new Graph();
+
     // For visualising the graph
     this._vis = { nodes: [], edges: [] };
 
@@ -78,8 +80,6 @@ export default class Scene
         });
     }
 
-    let g = new Graph();
-
     // Add `nodes` indices to graph
     for (let i in nodes)
     {
@@ -88,6 +88,9 @@ export default class Scene
       // For visualising the graph
       this._vis.nodes.push(nodes[Number(i)].vertex);
     }
+
+
+    // Add obstacles' permimeter edges to the graph
 
     // g.addedge(): perimeter of all obstacles
 

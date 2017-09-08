@@ -2,7 +2,7 @@
 import Scene                            from './Scene';
 import Renderer                         from './Renderer';
 import {Square, rotate, translate}      from './Util';
-import {point_in_polygon}               from './Util';
+import {point_in_polygon, Triangle}     from './Util';
 
 const element = 'display';
 
@@ -19,19 +19,20 @@ let end = [380, 420];
 let mx = end[0], my = [1];
 
 // For the shape animations
-let rotx = 300, roty = 400;
+let rotx = 300, roty = 350;
 let motion = 0, rota = 0;
 
 // Create some dynamic obstacles
-let sq_small = Square(60, 100, 100);
-let sq_large = Square(rotx, roty, 325);
-
+let sq_small = Square(600, 100, 100);
+let sq_large = Triangle(rotx, roty, 400);
 
 let obstacles = [
   // Dynamic
-  sq_small, sq_large,
+  //sq_small,
+  sq_large,
   // Static
-  Square(50, 250, 50), Square(500, 100, 150), Square(620, 400, 100)
+  //Square(60, 250, 50), Square(12,12, 2), Square(620, 400, 100),
+
 ];
 
 // Add them all to the scene
@@ -68,7 +69,7 @@ function frame()
     renderer.render( vis.edges, '#eee' );
   }
 
-  // Render the original scene geometry on top of the graph
+  // // Render the original scene geometry on top of the graph
   renderer.render( start, '#0a0', 6 );
   renderer.render( end, '#0a0', 6 );
   renderer.render( scene.objects, '#333' );
@@ -84,7 +85,7 @@ function frame()
 
   // Animation
   motion += 0.05; // Sinusoidal
-  translate(sq_small, 3 * Math.sin(motion * 0.25 * Math.PI), 0);
+  translate(sq_small, 0, 3 * Math.sin(motion * 0.25 * Math.PI));
 
   // rotate the big square
   rotate(sq_large, rotx, roty, 0.005);
