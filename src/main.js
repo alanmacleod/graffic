@@ -11,7 +11,7 @@ let scene = new Scene();
 let info = document.getElementById('infoText');
 
 // Show/hide the scene graph
-let debug = true;
+let showGraph = true, showObstacles = true;
 
 // Start point and our goal
 let start = [10, 10];
@@ -23,16 +23,14 @@ let rotx = 300, roty = 350;
 let motion = 0, rota = 0;
 
 // Create some dynamic obstacles
-let sq_small = Square(600, 100, 100);
-let sq_large = Triangle(rotx, roty, 400);
+let sq_small = Square(650, 100, 150);
+let sq_large = Square(rotx, roty, 300);
 
 let obstacles = [
-  // Dynamic
+  Square(80, 120, 100),
+  //, Square(12,12, 2),
   //sq_small,
-  sq_large,
-  // Static
-  //Square(60, 250, 50), Square(12,12, 2), Square(620, 400, 100),
-
+  sq_large
 ];
 
 // Add them all to the scene
@@ -59,7 +57,7 @@ function frame()
 
   renderer.clear();
 
-  if (debug)
+  if (showGraph)
   {
     // Draw the scene graph nodes
     for (let n of vis.nodes)
@@ -69,11 +67,15 @@ function frame()
     renderer.render( vis.edges, '#eee' );
   }
 
-  // // Render the original scene geometry on top of the graph
-  // renderer.render( start, '#0a0', 6 );
-  // renderer.render( end, '#0a0', 6 );
-  // renderer.render( scene.objects, '#333' );
+  // Render the original scene geometry on top of the graph
+  if (showObstacles)
+  {
+    renderer.render( start, '#0a0', 6 );
+    renderer.render( end, '#0a0', 6 );
+    renderer.render( scene.objects, '#333' );
+  }
 
+  // User has moved the mouse inside a shape obstacle which invalidates the graph
   if (inside >= 0)
   {
     show_info("End point inside solid object!")
@@ -92,21 +94,13 @@ function frame()
 
 }
 
-document.getElementById('cb_debug').onclick = (e, c) => { debug = e.srcElement.checked; }
-
 // Save the last known mouse position
 document.getElementById(element).onmousemove = e => { mx = e.clientX; my = e.clientY; }
+document.getElementById('cb_debug').onclick = (e, c) => { showGraph = e.srcElement.checked; }
+document.getElementById('cb_debug2').onclick = (e, c) => { showObstacles = e.srcElement.checked; }
 
-function show_info(text)
-{
-  info.innerHTML = text;
-  info.style.display = 'block';
-}
-
-function hide_info()
-{
-  info.style.display = 'none';
-}
+function show_info(text) { info.innerHTML = text; info.style.display = 'block'; }
+function hide_info() { info.style.display = 'none'; }
 
 // This prevents a bit of a mess from happening
 // when the mouse cursor drifts *inside* a supposedly solid shape

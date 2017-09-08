@@ -17,6 +17,11 @@ export default class Graph
   // adjaceny edge list
   addedge(v1, v2, cost)
   {
+    if (v1 == 1 || v2 == 1)
+    {
+      console.log(v1, v2, cost);
+    }
+
     this.edges[v1].push({dest:v2, cost});
     this.edges[v2].push({dest:v1, cost});
 
