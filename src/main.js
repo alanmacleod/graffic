@@ -68,7 +68,7 @@ function frame()
   }
 
   // Render the original scene geometry on top of the graph
-  if (showObstacles)
+  //if (showObstacles)
   {
     renderer.render( start, '#0a0', 6 );
     renderer.render( end, '#0a0', 6 );
@@ -90,7 +90,8 @@ function frame()
   translate(sq_small, 0, 3 * Math.sin(motion * 0.25 * Math.PI));
 
   // rotate the big square
-  rotate(sq_large, rotx, roty, 0.005);
+  if (showObstacles)
+    rotate(sq_large, rotx, roty, 0.005);
 
 }
 
