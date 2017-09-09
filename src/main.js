@@ -91,8 +91,7 @@ function frame()
   translate(sq_small, 0, 3 * Math.sin(motion * 0.25 * Math.PI));
 
   // rotate the big square
-  if (showObstacles)
-    rotate(sq_large, rotx, roty, 0.005);
+  rotate(sq_large, rotx, roty, 0.005);
 
 }
 
