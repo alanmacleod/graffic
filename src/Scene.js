@@ -23,13 +23,10 @@ export default class Scene
     this.graph = this._graph(start, end);
     let nodes = this.graph.shortest(0, 1); // [0] start, [1] end (see .graph())
 
-    console.log(nodes);
-
     let route = [];
+    
     for (let n of nodes)
-    {
       route.push(this._vis.nodes[ n ]);
-    }
 
     return route;
   }
@@ -90,7 +87,12 @@ export default class Scene
         });
 
       }
+
       // this isn't a closed ring (matching start and endp)
+      // i.e. a straight line.
+      // Later: In hindsight, I shouldn't have bothered trying to
+      // support essentially dimensionless entities like a two-sided straight line in 2d space.
+      // everything should be a closed ring, even if it's ininitely small.
       if (!equals(o[0], o[e]))
         nodes.push({
           vertex: o[e],
@@ -107,24 +109,12 @@ export default class Scene
       this._vis.nodes.push(nodes[Number(i)].vertex);
     }
 
+    //TODO: refactor the node/edge data struct mess
     for (let ge of gedges)
     {
       g.addedge(ge.index[0], ge.index[1], cost(ge.vertex[0], ge.vertex[1]));
       this._vis.edges.push([ge.vertex[0], ge.vertex[1]]);
     }
-
-    // Add obstacles' permimeter edges to the graph
-    //
-    // for (let o of this.objects)
-    // {
-    //   let cords = "";
-    //   for (let e of o)
-    //   {
-    //     cords += `(${e}), `;
-    //   }
-    //   console.log(cords);
-    // }
-    // g.addedge(): perimeter of all obstacles
 
     let ne=0;
 
@@ -149,7 +139,6 @@ export default class Scene
           }
 
       }
-
 
     return g;
   }
