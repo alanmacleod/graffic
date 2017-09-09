@@ -24,7 +24,7 @@ let motion = 0;
 
 // Create some dynamic obstacles
 let sq_small = Square(650, 100, 150);
-let sq_large = Square(rotx, roty, 300);
+let sq_large = Triangle(rotx, roty, 400);
 
 let obstacles = [
   Square(80, 120, 100),
@@ -89,6 +89,8 @@ function frame()
   // Animation
   motion += 0.05; // Sinusoidal
   translate(sq_small, 0, 3 * Math.sin(motion * 0.25 * Math.PI));
+
+  translate([start], 3 * Math.sin(motion * 0.05 * Math.PI), 0);
 
   // rotate the big square
   rotate(sq_large, rotx, roty, 0.005);
