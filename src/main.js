@@ -15,8 +15,9 @@ let showGraph = true, showObstacles = true;
 
 // Start point and our goal
 let start = [10, 10];
-let end = [380, 420];
-let mx = end[0], my = [1];
+// let end = [380, 420];
+let end = [450, 520];
+let mx = end[0], my = end[1];
 
 // For the shape animations
 let rotx = 300, roty = 350;
@@ -37,11 +38,22 @@ let obstacles = [
 for (let o of obstacles)
   scene.add( o );
 
+
+// DEBUGGING STARTS HERE
+
+rotate(sq_large, rotx, roty, 0.785);
+let route = scene.solve( start, end );
+console.log(route);
+
+
+
+///
+
 frame();
 
 function frame()
 {
-  requestAnimationFrame( frame );
+  // requestAnimationFrame( frame );
 
   hide_info();
 
@@ -50,7 +62,7 @@ function frame()
   // Find the shortest path. Two things happen here:
   //    1. A Scene graph is extracted from our scene geometry
   //    2. Dijkstra's method is used to find the optimal route across the graph
-  let route = scene.solve( start, end );
+  // let route = scene.solve( start, end );
 
   // Get a visualisation of the actual scenegraph
   let vis = scene.vis();
@@ -68,7 +80,7 @@ function frame()
   }
 
   // Render the original scene geometry on top of the graph
-  //if (showObstacles)
+  if (showObstacles)
   {
     renderer.render( start, '#0a0', 6 );
     renderer.render( end, '#0a0', 6 );
@@ -90,13 +102,13 @@ function frame()
   translate(sq_small, 0, 3 * Math.sin(motion * 0.25 * Math.PI));
 
   // rotate the big square
-  if (showObstacles)
-    rotate(sq_large, rotx, roty, 0.005);
+  // if (showObstacles)
+  //   rotate(sq_large, rotx, roty, 0.005);
 
 }
 
 // Save the last known mouse position
-document.getElementById(element).onmousemove = e => { mx = e.clientX; my = e.clientY; }
+document.getElementById(element).onmousemove = e => { mx = e.clientX; my = e.clientY;  }
 document.getElementById('cb_debug').onclick = (e, c) => { showGraph = e.srcElement.checked; }
 document.getElementById('cb_debug2').onclick = (e, c) => { showObstacles = e.srcElement.checked; }
 

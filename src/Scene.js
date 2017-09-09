@@ -23,6 +23,8 @@ export default class Scene
     this.graph = this._graph(start, end);
     let nodes = this.graph.shortest(0, 1); // [0] start, [1] end (see .graph())
 
+    console.log(nodes);
+
     let route = [];
     for (let n of nodes)
     {
@@ -67,16 +69,21 @@ export default class Scene
       let base = nodes.length;
       for (e=0; e<o.length-1; e++)
       {
+        let v1 = base + e;
+        // Ffs alan what a mess (n.b. it took 30 mins of debugging to get this line below correct)
+        // it was originally (base + e + 1) % (o.length-1)) which is quite different.
+        // I thought this was going to be such a difficult bug to fix, I nearly didn't bother trying.
+        // tbh, these node/edge structures need a serious refactoring if ever this program is expanded!!!      
+        let v2 = base + ((e + 1) % (o.length-1));
 
-        // Ffs alan what a mess
-        // let v1 = base + e;
-        // let v2 = (base + e + 1) % (o.length-1);
-        //
-        // gedges.push({
-        //   index:[v1, v2],
-        //   vertex: [o[e], o[e+1]]
-        // });
-        //
+        let temp = {
+          index:[v1, v2],
+          vertex: [o[e], o[e+1]]
+        };
+        gedges.push(temp);
+
+        console.log(temp);
+
         edges.push([o[e], o[e+1]]);
 
         nodes.push({
@@ -102,11 +109,11 @@ export default class Scene
       this._vis.nodes.push(nodes[Number(i)].vertex);
     }
 
-    // for (let ge of gedges)
-    // {
-    //   g.addedge(ge.index[0], ge.index[1], cost(ge.vertex[0], ge.vertex[1]));
-    //   this._vis.edges.push([ge.vertex[0], ge.vertex[1]]);
-    // }
+    for (let ge of gedges)
+    {
+      g.addedge(ge.index[0], ge.index[1], cost(ge.vertex[0], ge.vertex[1]));
+      this._vis.edges.push([ge.vertex[0], ge.vertex[1]]);
+    }
 
     // Add obstacles' permimeter edges to the graph
     //
