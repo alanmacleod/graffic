@@ -16,7 +16,7 @@ let showGraph = true, showObstacles = true;
 // Start point, goal and lastknown mouse coords
 let start = [10, 10];
 let end = [220, 120];
-let mx = end[0], my = end[1];
+let mouse = end.slice();
 
 // For the shape animations
 let rotx = 300, roty = 350, rota = 0;
@@ -27,26 +27,27 @@ let sq_small = Square(650, 100, 150);
 let sq_large = Triangle(rotx, roty, 400);
 
 let obstacles = [
-  Square(80, 120, 100),
-  sq_small,
-  sq_large
+  Square(80, 120, 100), // static
+  sq_small, // dynamic
+  sq_large // dynamic
 ];
 
 // Add them all to the scene
 for (let o of obstacles)
   scene.add( o );
 
-
-
-frame();
-
-function frame()
+// Go!
+(function frame()
 {
   requestAnimationFrame( frame );
 
-  hide_info();
+  renderer.clear();
 
-  let inside = dodge_nullspace();
+  // Animation
+  motion += 0.05; // Sinusoidal
+  translate(sq_small, 0, 3 * Math.sin(motion * 0.25 * Math.PI));
+  translate([start], 3 * Math.sin(motion * 0.05 * Math.PI), 0);
+  rotate(sq_large, rotx, roty, 0.005);
 
   // Find the shortest path. Two things happen here:
   //    1. A Scene graph is extracted from our scene geometry
@@ -55,8 +56,6 @@ function frame()
 
   // Get a visualisation of the actual scenegraph
   let vis = scene.vis();
-
-  renderer.clear();
 
   if (showGraph)
   {
@@ -76,29 +75,22 @@ function frame()
     renderer.render( scene.objects, '#333' );
   }
 
+  let inside = dodge_nullspace();
+
   // User has moved the mouse inside a shape obstacle which invalidates the graph
   if (inside >= 0)
   {
     show_info("End point inside solid object!")
     renderer.render( [scene.objects[inside]], '#f00', 5 );
-  }
+  } else hide_info();
 
   // Now display the found route!
   renderer.render( [route], '#00f', 3 );
 
-  // Animation
-  motion += 0.05; // Sinusoidal
-  translate(sq_small, 0, 3 * Math.sin(motion * 0.25 * Math.PI));
+})();
 
-  translate([start], 3 * Math.sin(motion * 0.05 * Math.PI), 0);
 
-  // rotate the big square
-  rotate(sq_large, rotx, roty, 0.005);
-
-}
-
-// Save the last known mouse position
-document.getElementById(element).onmousemove = e => { mx = e.clientX; my = e.clientY;  }
+document.getElementById(element).onmousemove = e => { mouse = [e.clientX, e.clientY];  }
 document.getElementById('cb_debug').onclick = (e, c) => { showGraph = e.srcElement.checked; }
 document.getElementById('cb_debug2').onclick = (e, c) => { showObstacles = e.srcElement.checked; }
 
@@ -109,15 +101,12 @@ function hide_info() { info.style.display = 'none'; }
 // when the mouse cursor drifts *inside* a supposedly solid shape
 function dodge_nullspace()
 {
-  // Our tentative new coordinate (last known mouse pos)
-  let c = [mx, my];
-
   // Check the current position of each of our solid shapes
   for (let i in obstacles)
   {
     let o = obstacles[i>>0];
     // Oh no!
-    if (point_in_polygon(c, o))  // simple convex-only test
+    if (point_in_polygon(mouse, o))  // simple convex-only test
     {
       // Set the endpoint to the start to remove the red line and cursor
       end = start;
@@ -125,6 +114,6 @@ function dodge_nullspace()
     }
   }
   // All good, set the endpoint to the last known mouse pos
-  end = c;
+  end = mouse;
   return -1;
 }
