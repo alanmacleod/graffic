@@ -17,11 +17,6 @@ export default class Graph
   // adjaceny edge list
   addedge(v1, v2, cost)
   {
-    if (v1 == 1 || v2 == 1)
-    {
-      // console.log(v1, v2, cost);
-    }
-
     this.edges[v1].push({dest:v2, cost});
     this.edges[v2].push({dest:v1, cost});
 
@@ -36,8 +31,6 @@ export default class Graph
     let dist = [0];
     let prev = [];
     let unvisited = [];
-
-    console.log(this.edges);
 
     for (let i=0; i<this.vertices.length; i++)
     {
@@ -86,7 +79,7 @@ export default class Graph
       c = prev[c];
       seq.push(c);
     } while(c != start);
-    
+
     return seq.reverse();
 
   }

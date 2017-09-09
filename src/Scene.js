@@ -69,20 +69,18 @@ export default class Scene
       let base = nodes.length;
       for (e=0; e<o.length-1; e++)
       {
+
         let v1 = base + e;
         // Ffs alan what a mess (n.b. it took 30 mins of debugging to get this line below correct)
         // it was originally (base + e + 1) % (o.length-1)) which is quite different.
         // I thought this was going to be such a difficult bug to fix, I nearly didn't bother trying.
-        // tbh, these node/edge structures need a serious refactoring if ever this program is expanded!!!      
+        // tbh, these node/edge structures need a serious refactoring if ever this program is expanded!!!
         let v2 = base + ((e + 1) % (o.length-1));
 
-        let temp = {
+        gedges.push({
           index:[v1, v2],
           vertex: [o[e], o[e+1]]
-        };
-        gedges.push(temp);
-
-        console.log(temp);
+        });
 
         edges.push([o[e], o[e+1]]);
 
