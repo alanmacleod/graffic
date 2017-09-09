@@ -13,15 +13,14 @@ let info = document.getElementById('infoText');
 // Show/hide the scene graph
 let showGraph = true, showObstacles = true;
 
-// Start point and our goal
+// Start point, goal and lastknown mouse coords
 let start = [10, 10];
-let end = [380, 420];
-// let end = [450, 520];
+let end = [220, 120];
 let mx = end[0], my = end[1];
 
 // For the shape animations
-let rotx = 300, roty = 350;
-let motion = 0, rota = 0;
+let rotx = 300, roty = 350, rota = 0;
+let motion = 0;
 
 // Create some dynamic obstacles
 let sq_small = Square(650, 100, 150);
@@ -29,8 +28,7 @@ let sq_large = Square(rotx, roty, 300);
 
 let obstacles = [
   Square(80, 120, 100),
-  //, Square(12,12, 2),
-  //sq_small,
+  sq_small,
   sq_large
 ];
 
@@ -39,13 +37,6 @@ for (let o of obstacles)
   scene.add( o );
 
 
-// // DEBUGGING STARTS HERE
-//
-// rotate(sq_large, rotx, roty, 0.785);
-// let route = scene.solve( start, end );
-// console.log(route);
-//
-// ///
 
 frame();
 
