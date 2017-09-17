@@ -86,7 +86,7 @@ for (let o of obstacles)
   } else {
 
     hide_info();
-    
+
     // Now display the found route!
     renderer.render( [route], '#00f', 3 );
 

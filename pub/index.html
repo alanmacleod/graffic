@@ -9,11 +9,14 @@
   }
   body {
     font-family: Helvetica, sans-serif;
-    font-size: 18px;
+    font-size: 24px;
   }
   #content
   {
-    margin: auto;
+    /*margin: auto;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
     width: 850px;
     height: 650px;
   }
@@ -22,15 +25,17 @@
 </head>
 <body>
   <div id="content">
+    <div style="padding:10px">
+      <input type="checkbox" checked="checked" name="cb_debug" id="cb_debug" value="true">
+      <label for="cb_debug">Show calculated scene graph</label><br />
+      <input type="checkbox" checked="checked" name="cb_debug2" id="cb_debug2" value="true">
+      <label for="cb_debug2">Show obstacles</label>
+    </div>
     <div>
       <canvas id="display" width="800" height="600" />
     </div>
     <div>
-      <input type="checkbox" checked="checked" name="cb_debug" id="cb_debug" value="true">
-      <label for="cb_debug">Show calculated scene graph</label>
-      <input type="checkbox" checked="checked" name="cb_debug2" id="cb_debug2" value="true">
-      <label for="cb_debug2">Show obstacles</label>
-      <div style="margin-top:10px; color:red" id="infoText"></div>
+      <div style="margin-top:10px; color:red; font-weight: bold; text-align:center" id="infoText"></div>
     </div>
   </div>
 </body>
