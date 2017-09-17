@@ -4,7 +4,6 @@
 <head>
   <style>
   #display {
-    border: 1px solid gray;
     width: 800px;
     height: 600px;
   }
@@ -12,20 +11,26 @@
     font-family: Helvetica, sans-serif;
     font-size: 18px;
   }
+  #content
+  {
+    margin: auto;
+    width: 850px;
+    height: 650px;
+  }
+
   </style>
 </head>
 <body>
-  <div>
-  <canvas id="display" width="800" height="600" />
-  </div>
-  <div>
-    <input type="checkbox" checked="checked" name="cb_debug" id="cb_debug" value="true">
-    <label for="cb_debug">Show calculated scene graph</label>
-    <input type="checkbox" checked="checked" name="cb_debug2" id="cb_debug2" value="true">
-    <label for="cb_debug2">Show obstacles</label>
-
-    <div style="margin-top:10px; color:red" id="infoText">
-
+  <div id="content">
+    <div>
+      <canvas id="display" width="800" height="600" />
+    </div>
+    <div>
+      <input type="checkbox" checked="checked" name="cb_debug" id="cb_debug" value="true">
+      <label for="cb_debug">Show calculated scene graph</label>
+      <input type="checkbox" checked="checked" name="cb_debug2" id="cb_debug2" value="true">
+      <label for="cb_debug2">Show obstacles</label>
+      <div style="margin-top:10px; color:red" id="infoText"></div>
     </div>
   </div>
 </body>
