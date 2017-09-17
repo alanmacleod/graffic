@@ -16,7 +16,7 @@
     /*margin: auto;*/
     margin-left: auto;
     margin-right: auto;
-    
+
     width: 850px;
     height: 650px;
   }
@@ -38,19 +38,20 @@
       <div style="color:red; font-weight: bold; text-align:center" id="infoText"></div>
     </div>
     <div style="width: 640px; font-size: 14px; color:#666">
-      <h1>graffic</h1>
+      <h3>graffic</h3>
       <p>
-          Shortest pathfinding within continuous geometry
+        This demo uses point-to-point visibilty tests to construct a scene graph and then Dijkstra to solve the route for shortest distance. More info: <a href="https://github.com/alanmacleod/graffic">https://github.com/alanmacleod/graffic</a>
       </p>
-
-<p>
-Most pathfinding solutions I looked at seemed to be aimed at navigation in one of these two common scenarios:
-</p>
-
-
-Discrete space (i.e. uniformly sized adjacent squares, orthogonal cells, pixels etc). Poor resolution.
-Where a graph of the scene already existed, e.g. a road network as used by satnavs.
-I wanted the ability to throw a start point, end point and a list of arbitrary 2d objects with cartesian coordinates at a function and have it return the shortest path through.
+      <p>
+        Uses a modified version of Peter Kelley's <a href="https://github.com/pgkelley4/line-segments-intersect">line-segments-intersect</a>. As I couldn't get my intersection tests to avoid 'leaking' through shape corners. So, thanks.
+      </p>
+      <!-- <p>Shortest pathfinding within continuous geometry.</p>
+      <p>Most pathfinding solutions I looked at seemed to be aimed at navigation in one of these two common scenarios:</p>
+      <ol>
+        <li>Discrete space (i.e. uniformly sized adjacent squares, orthogonal cells, pixels etc). Poor resolution.</li>
+        <li>Where a graph of the scene already existed, e.g. a road network as used by satnavs.        </li>
+      </ol>
+      I wanted the ability to throw a start point, end point and a list of arbitrary 2d objects with cartesian coordinates at a function and have it return the shortest path through. -->
     </div>
 
   </div>
