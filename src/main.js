@@ -98,7 +98,7 @@ for (let o of obstacles)
 
 
 document.getElementById(element).onmousemove = e => {
-  mouse = [e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop];};
+  mouse = [e.clientX - e.target.offsetLeft + window.scrollX, e.clientY - e.target.offsetTop + window.scrollY];};
 document.getElementById('cb_debug').onclick = (e, c) => { showGraph = e.srcElement.checked; };
 document.getElementById('cb_debug2').onclick = (e, c) => { showObstacles = e.srcElement.checked; };
 
