@@ -3,6 +3,10 @@
 
 Shortest pathfinding within continuous geometry
 
+
+[Live interactive demo here!](https://demos.alanmacleod.eu/graffic/pub/)
+
+
 Most pathfinding solutions I looked at seemed to be aimed at navigation in one of these two common scenarios:
 
 1. Discrete space (i.e. uniformly sized adjacent squares, orthogonal cells, pixels etc). Poor resolution.
